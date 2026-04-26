@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weimarer Republik 1918–1929</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0e0f;
+  --surface: #161618;
+  --border: #2a2a2e;
+  --accent: #c9a84c;
+  --accent-dim: rgba(201,168,76,0.12);
+  --green: #4caf7d;
+  --green-dim: rgba(76,175,125,0.13);
+  --red: #e05c5c;
+  --red-dim: rgba(224,92,92,0.13);
+  --yellow: #e8c84a;
+  --yellow-dim: rgba(232,200,74,0.13);
+  --text: #e8e4dc;
+  --text-dim: #7a7870;
+  --text-mid: #b0aba0;
+  --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: "DM Sans", sans-serif; min-height: 100vh; }
+
+/* ── TOP NAV ── */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 0; position: sticky; top: 0; z-index: 100; }
+.topbar-title { font-family: "Playfair Display", serif; font-size: 15px; color: var(--text); padding: 16px 24px 16px 0; border-right: 1px solid var(--border); margin-right: 24px; white-space: nowrap; }
+.tab { padding: 18px 20px; font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; user-select: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.badge { background: var(--accent-dim); color: var(--accent); font-family: "DM Mono", monospace; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+
+/* ── PANELS ── */
+.panel { display: none; padding: 40px 16px 80px; max-width: 720px; margin: 0 auto; }
+.panel.active { display: block; }
+
+/* ── SHARED ── */
+.era-label { font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; text-align: center; }
+.panel-title { font-family: "Playfair Display", serif; font-size: clamp(22px,5vw,32px); font-weight: 700; text-align: center; margin-bottom: 36px; }
+
+/* ── PROGRESS ── */
+.progress-section { margin-bottom: 28px; }
+.stats-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-family: "DM Mono", monospace; font-size: 12px; }
+.stat { display: flex; align-items: center; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot.k { background: var(--green); }
+.dot.n { background: var(--red); }
+.dot.r { background: var(--text-dim); }
+.track { height: 4px; background: #222225; border-radius: 2px; overflow: hidden; display: flex; }
+.bar { height: 100%; transition: width 0.4s ease; }
+.bar.k { background: var(--green); }
+.bar.n { background: var(--red); }
+
+/* ── FLASHCARD ── */
+.card-counter { font-family: "DM Mono", monospace; font-size: 11px; color: var(--text-dim); text-align: center; margin-bottom: 12px; }
+.card-area { perspective: 1200px; margin-bottom: 24px; }
+.card-wrap { width: 100%; height: 340px; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1); cursor: pointer; }
+.card-wrap.flipped { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 36px 44px; text-align: center; }
+.face.back { transform: rotateY(180deg); background: #111113; text-align: left; align-items: flex-start; overflow-y: auto; }
+.face .hint { position: absolute; bottom: 16px; font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--text-dim); text-transform: uppercase; }
+.q-text { font-family: "Playfair Display", serif; font-size: clamp(15px,2.8vw,21px); line-height: 1.5; }
+.a-text { font-family: "DM Sans", sans-serif; font-size: clamp(13px,2.2vw,15px); line-height: 1.75; color: var(--text-mid); white-space: pre-line; max-height: 280px; overflow-y: auto; width: 100%; }
+.verdict-row { display: flex; gap: 12px; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 0.3s, transform 0.3s; margin-bottom: 20px; }
+.verdict-row.vis { opacity: 1; pointer-events: all; transform: translateY(0); }
+.vbtn { flex: 1; padding: 14px 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-mid); font-family: "DM Sans", sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+.vbtn.yes { border-color: rgba(76,175,125,0.3); background: var(--green-dim); color: var(--green); }
+.vbtn.yes:hover { background: rgba(76,175,125,0.22); border-color: var(--green); }
+.vbtn.no { border-color: rgba(224,92,92,0.3); background: var(--red-dim); color: var(--red); }
+.vbtn.no:hover { background: rgba(224,92,92,0.22); border-color: var(--red); }
+.nav-row { display: flex; gap: 10px; justify-content: center; }
+.nbtn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; color: var(--text-mid); font-family: "DM Mono", monospace; font-size: 12px; padding: 10px 20px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em; }
+.nbtn:hover { background: #1e1e21; color: var(--text); border-color: #3a3a40; }
+.nbtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nbtn.primary { background: var(--accent-dim); border-color: rgba(201,168,76,0.35); color: var(--accent); }
+.nbtn.primary:hover { background: rgba(201,168,76,0.2); border-color: var(--accent); }
+.kb-hint { font-family: "DM Mono", monospace; font-size: 10px; color: var(--text-dim); text-align: center; margin-top: 16px; letter-spacing: 0.12em; }
+kbd { background: #1e1e21; border: 1px solid #333; border-radius: 4px; padding: 1px 5px; font-family: "DM Mono", monospace; font-size: 10px; }
+
+/* ── DONE SCREEN (FC) ── */
+.done { display: none; text-align: center; }
+.done.vis { display: block; animation: fadeIn 0.4s ease; }
+.done-title { font-family: "Playfair Display", serif; font-size: 32px; margin-bottom: 8px; }
+.done-sub { font-family: "DM Mono", monospace; font-size: 12px; color: var(--text-dim); letter-spacing: 0.1em; margin-bottom: 36px; }
+.result-grid { display: flex; gap: 16px; margin-bottom: 32px; }
+.rbox { flex: 1; padding: 24px 16px; border-radius: 14px; border: 1px solid; text-align: center; }
+.rbox.g { background: var(--green-dim); border-color: rgba(76,175,125,0.3); }
+.rbox.r { background: var(--red-dim); border-color: rgba(224,92,92,0.3); }
+.rnum { font-family: "Playfair Display", serif; font-size: 48px; font-weight: 700; display: block; }
+.rbox.g .rnum { color: var(--green); }
+.rbox.r .rnum { color: var(--red); }
+.rlabel { font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-top: 4px; display: block; }
+
+/* ── QUIZ ── */
+.quiz-header { margin-bottom: 28px; }
+.quiz-progress-bar { height: 4px; background: #222225; border-radius: 2px; margin-bottom: 8px; }
+.quiz-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+.quiz-counter { font-family: "DM Mono", monospace; font-size: 11px; color: var(--text-dim); text-align: center; }
+.question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 40px; margin-bottom: 20px; }
+.question-text { font-family: "Playfair Display", serif; font-size: clamp(15px,2.5vw,20px); line-height: 1.5; margin-bottom: 28px; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+.option:hover:not(.locked) { background: #1e1e21; border-color: #3a3a40; }
+.option-letter { width: 28px; height: 28px; border-radius: 50%; background: #222225; display: flex; align-items: center; justify-content: center; font-family: "DM Mono", monospace; font-size: 12px; color: var(--text-dim); flex-shrink: 0; transition: all 0.2s; }
+.option-text { font-family: "DM Sans", sans-serif; font-size: 14px; line-height: 1.5; color: var(--text-mid); }
+.option.correct { background: var(--green-dim); border-color: rgba(76,175,125,0.4); }
+.option.correct .option-letter { background: var(--green); color: #0e0e0f; }
+.option.correct .option-text { color: var(--text); }
+.option.wrong { background: var(--red-dim); border-color: rgba(224,92,92,0.4); }
+.option.wrong .option-letter { background: var(--red); color: #0e0e0f; }
+.option.wrong .option-text { color: var(--text); }
+.option.locked { cursor: default; }
+.feedback { margin-top: 16px; padding: 14px 18px; border-radius: 12px; font-family: "DM Sans", sans-serif; font-size: 14px; line-height: 1.6; display: none; }
+.feedback.show { display: block; }
+.feedback.correct-fb { background: var(--green-dim); border: 1px solid rgba(76,175,125,0.3); color: #a0dbb8; }
+.feedback.wrong-fb { background: var(--red-dim); border: 1px solid rgba(224,92,92,0.3); color: #e8a5a5; }
+.hint-area { margin-top: 12px; }
+.hint-btn { background: var(--yellow-dim); border: 1px solid rgba(232,200,74,0.3); border-radius: 10px; color: var(--yellow); font-family: "DM Mono", monospace; font-size: 11px; padding: 8px 16px; cursor: pointer; letter-spacing: 0.1em; transition: all 0.2s; }
+.hint-btn:hover { background: rgba(232,200,74,0.2); }
+.hint-text { display: none; margin-top: 10px; padding: 12px 16px; background: var(--yellow-dim); border: 1px solid rgba(232,200,74,0.2); border-radius: 10px; font-family: "DM Sans", sans-serif; font-size: 13px; color: var(--yellow); }
+.hint-text.show { display: block; }
+.quiz-nav { display: flex; gap: 10px; justify-content: space-between; }
+.quiz-nav-left { display: flex; gap: 10px; }
+
+/* ── QUIZ DONE ── */
+.quiz-done { display: none; text-align: center; }
+.quiz-done.vis { display: block; animation: fadeIn 0.4s ease; }
+.score-big { font-family: "Playfair Display", serif; font-size: 64px; font-weight: 700; color: var(--accent); }
+.score-label { font-family: "DM Mono", monospace; font-size: 12px; color: var(--text-dim); letter-spacing: 0.15em; margin-bottom: 32px; }
+.score-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 32px; }
+.score-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 12px; }
+.score-num { font-family: "Playfair Display", serif; font-size: 32px; font-weight: 700; display: block; }
+.score-num.g { color: var(--green); }
+.score-num.r { color: var(--red); }
+.score-num.d { color: var(--text-dim); }
+.score-lbl { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-top: 4px; display: block; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topbar">
+  <div class="topbar-title">Geschichte 1918–1929</div>
+  <div class="tab active" onclick="switchTab('fc')">Flashcards <span class="badge">25</span></div>
+  <div class="tab" onclick="switchTab('quiz')">Quiz <span class="badge">15</span></div>
+</div>
+
+<!-- ═══════════ FLASHCARD PANEL ═══════════ -->
+<div class="panel active" id="panel-fc">
+  <div class="era-label">1918 – 1929</div>
+  <div class="panel-title">Weimarer Republik</div>
+
+  <div class="progress-section">
+    <div class="stats-row">
+      <div class="stat"><span class="dot k"></span><span id="fc-k">0 gewusst</span></div>
+      <div class="stat"><span class="dot r"></span><span id="fc-r">25 offen</span></div>
+      <div class="stat"><span class="dot n"></span><span id="fc-n">0 nicht gewusst</span></div>
+    </div>
+    <div class="track"><div class="bar k" id="bar-k" style="width:0%"></div><div class="bar n" id="bar-n" style="width:0%"></div></div>
+  </div>
+
+  <div id="fc-main">
+    <div class="card-counter" id="fc-counter">Karte 1 / 25</div>
+    <div class="card-area">
+      <div class="card-wrap" id="card-wrap">
+        <div class="face front"><div class="q-text" id="q-text"></div><div class="hint">Klicken zum Umdrehen</div></div>
+        <div class="face back"><div class="a-text" id="a-text"></div><div class="hint">Bewerte deine Antwort unten</div></div>
+      </div>
+    </div>
+    <div class="verdict-row" id="v-row">
+      <button class="vbtn no" onclick="verdict(false)">✕ &nbsp;Nicht gewusst</button>
+      <button class="vbtn yes" onclick="verdict(true)">✓ &nbsp;Gewusst</button>
+    </div>
+    <div class="nav-row">
+      <button class="nbtn" id="btn-prev" onclick="fcNav(-1)">← Zurück</button>
+      <button class="nbtn primary" onclick="fcResetAll()">↺ Neustart</button>
+      <button class="nbtn" id="btn-next" onclick="fcNav(1)">Weiter →</button>
+    </div>
+    <div class="kb-hint"><kbd>Space</kbd> umdrehen &nbsp;·&nbsp; <kbd>Y</kbd> gewusst &nbsp;·&nbsp; <kbd>N</kbd> nicht gewusst &nbsp;·&nbsp; <kbd>←</kbd><kbd>→</kbd> navigieren</div>
+  </div>
+
+  <div class="done" id="fc-done">
+    <div class="done-title">Fertig.</div>
+    <div class="done-sub">Durchgang abgeschlossen</div>
+    <div class="result-grid">
+      <div class="rbox g"><span class="rnum" id="done-k">0</span><span class="rlabel">Gewusst</span></div>
+      <div class="rbox r"><span class="rnum" id="done-n">0</span><span class="rlabel">Nicht gewusst</span></div>
+    </div>
+    <button class="nbtn primary" onclick="fcResetWrong()" style="font-size:14px;padding:14px 32px;">↺ Nochmal (nur falsche)</button>
+    &nbsp;
+    <button class="nbtn" onclick="fcResetAll()" style="font-size:14px;padding:14px 32px;margin-top:10px;">Alle nochmal</button>
+  </div>
+</div>
+
+<!-- ═══════════ QUIZ PANEL ═══════════ -->
+<div class="panel" id="panel-quiz">
+  <div class="era-label">1918 – 1929</div>
+  <div class="panel-title">Quiz</div>
+
+  <div id="quiz-main">
+    <div class="quiz-header">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="q-prog" style="width:0%"></div></div>
+      <div class="quiz-counter" id="q-counter">Frage 1 / 15</div>
+    </div>
+    <div class="question-card">
+      <div class="question-text" id="q-question"></div>
+      <div class="options" id="q-options"></div>
+      <div class="hint-area">
+        <button class="hint-btn" onclick="toggleHint()">💡 Tipp anzeigen</button>
+        <div class="hint-text" id="q-hint"></div>
+      </div>
+      <div class="feedback" id="q-feedback"></div>
+    </div>
+    <div class="quiz-nav">
+      <div class="quiz-nav-left">
+        <button class="nbtn" id="q-prev" onclick="qNav(-1)">← Zurück</button>
+      </div>
+      <button class="nbtn primary" id="q-next" onclick="qNav(1)">Weiter →</button>
+    </div>
+  </div>
+
+  <div class="quiz-done" id="quiz-done">
+    <div class="score-big" id="q-score">0/15</div>
+    <div class="score-label">ERGEBNIS</div>
+    <div class="score-grid">
+      <div class="score-box"><span class="score-num g" id="qs-right">0</span><span class="score-lbl">Richtig</span></div>
+      <div class="score-box"><span class="score-num r" id="qs-wrong">0</span><span class="score-lbl">Falsch</span></div>
+      <div class="score-box"><span class="score-num d" id="qs-skip">0</span><span class="score-lbl">Offen</span></div>
+    </div>
+    <button class="nbtn primary" onclick="qReset()" style="font-size:14px;padding:14px 32px;">↺ Quiz wiederholen</button>
+  </div>
+</div>
+
+<script>
+// ═══ FLASHCARDS ═══
+const cards = [{"question": "Was war der Parlamentarisierungserlass (30.09.1918) und was bedeutete er?", "answer": "• Parlament (nicht mehr Kaiser) verantwortlich für Regierung\n• Deutschland wurde zur parlamentarischen Monarchie\n• 'Revolution von oben, um Revolution von unten zu verhindern'"}, {"question": "Wie endete das Kaiserreich am 9. November 1918?", "answer": "• Matrosenaufstand → Generalstreik landesweit\n• Max von Baden verkündet Abdankung Wilhelms II.\n• Scheidemann ruft parlamentarische Republik aus\n• Liebknecht ruft sozialistische Räterepublik aus\n• Friedrich Ebert wird Reichskanzler (MSPD)"}, {"question": "Was wollten MSPD, USPD und KPD nach der Revolution jeweils?", "answer": "• MSPD: parlamentarische Demokratie, Ordnung, Friedenswirtschaft\n• USPD: sozialistische Räterepublik wie Russland\n• KPD (ab Jan. 1919): Räterepublik, Weltrevolution\nScheidemann vs. Liebknecht: Gewaltenteilung Ja/Nein"}, {"question": "Was war der Ebert-Groener-Pakt (10.11.1918)?", "answer": "• Groener (OHL) unterstützt Regierung Ebert\n• Schutz vor linken Revolutionären (Spartakisten)\n• Ebert garantiert: Bestand der Armee + keine sozialistische Revolution\n• Kurzfristig wichtig, langfristig problematisch: Armee bleibt antidemokratisch"}, {"question": "Was enthielt das 9-Punkte-Programm des Rats der Volksbeauftragten (12.11.1918)?", "answer": "Bürgerrechte: Versammlungs-, Meinungs-, Pressefreiheit, Religionsfreiheit, Wahlalter ab 20, Wahlrecht für Mann + Frau\nSoziale Reformen: 8h-Tag, Krankenversicherung, Arbeitsschutz, Wohnraum"}, {"question": "Was war das Stinnes-Legien-Abkommen (15.11.1918)?", "answer": "• Vereinbarung Arbeitgeberverbände + Gewerkschaften\n• Offizielle Anerkennung der Gewerkschaften\n• 8-Stunden-Tag ohne Lohnabzug\n• Garantie: Arbeitsplatz, Koalitions- und Streikrecht, Betriebsräte"}, {"question": "Was waren die Gründe der Novemberrevolution?", "answer": "Politisch: mangelnde Demokratisierung, autoritäres System\nMilitärisch: Niederlage im Krieg\nWirtschaftlich: Hunger, Inflation, Arbeitslosigkeit, soziale Ungleichheit\nGesellschaftlich: Kriegsmüdigkeit → Radikalisierung nach russischem Vorbild"}, {"question": "Wie verlief der Spartakusaufstand (Januar 1919)?", "answer": "• 30.12.1918: Gründung KPD\n• 05.–12.01.1919: Spartakisten besetzen Berliner Viertel\n• Niederschlagung durch Regierungstruppen + Freikorps\n• Ermordung Rosa Luxemburg + Karl Liebknecht\n• 156 Tote → Scheitern des Aufstands"}, {"question": "Welche Folgen hatte der Spartakusaufstand?", "answer": "• Trotzdem Wahl zur Nationalversammlung 19.01.1919\n• Endgültige Spaltung KPD/USPD und MSPD\n• Gewalt als politisches Mittel legitimiert\n• Freikorps (antidemokratisch, rechts) bestehen weiter"}, {"question": "Was waren die Ergebnisse der Wahl zur Nationalversammlung (19.01.1919)?", "answer": "• Erste demokratische Wahl in Deutschland\n• Frauenwahlrecht + Wahlalter ab 20\n• Hohe Wahlbeteiligung: 83%\n• SPD stärkste Fraktion → Weimarer Koalition (SPD + Zentrum + DDP)\n• NV in Weimar (zu viele Unruhen in Berlin)"}, {"question": "Was sind die wichtigsten Prinzipien der Weimarer Verfassung?", "answer": "• Volkssouveränität (alle Gewalt vom Volk)\n• Republik, Demokratie, Föderalismus, Gewaltenteilung\n• Exekutive: Reichspräsident\n• Legislative: Reichstag/Reichsrat\n• Judikative: Reichsgericht\n• Kombination parlamentarischer Demokratie + starker Reichspräsident"}, {"question": "Welche Machtbefugnisse hatte der Reichspräsident (Weimarer Verfassung)?", "answer": "• Kann Regierung ernennen und entlassen\n• Kann Reichstag auflösen\n• Notverordnungsrecht (Art. 48)\n• Oberbefehl über Reichswehr\n→ Größte Schwäche der WR: ermöglicht autoritäres Regieren ohne Parlament"}, {"question": "Welche demokratischen Stärken hatte die Weimarer Verfassung?", "answer": "• Volkssouveränität + Volksentscheid\n• Allgemeines + gleiches Wahlrecht (M+F ab 20, jede Stimme gleich)\n• Keine Sperrklausel → maximale Repräsentation\n• Grundrechtekatalog\n• Sozialstaatliche Merkmale (Schutz der Arbeit, Mitbestimmung)"}, {"question": "Welche autoritären Schwächen hatte die Weimarer Verfassung?", "answer": "• Machtfülle des Reichspräsidenten (7 Jahre, unbegrenzt wählbar)\n• Notverordnungsrecht → Grundrechte außer Kraft setzbar\n• Fehlende Absicherung der Demokratie (antidemokratische Parteien legal)\n• Keine Sperrklausel → Zersplitterung\n• Reichspräsident wie 'Ersatzkaiser'"}, {"question": "Was regelte der Versailler Vertrag (28.06.1919)?", "answer": "• Kriegsschuldartikel 231: Deutschland trägt Alleinschuld\n• Reparationen: 132 Mrd. Goldmark\n• Gebietsverluste West, Nord, Ost\n• Armee max. 100.000 Mann, Wehrpflicht abgeschafft\n• Auslieferung des Kaisers als Kriegsverbrecher"}, {"question": "Welche Folgen hatte der Versailler Vertrag für die Weimarer Republik?", "answer": "• Empörung in Bevölkerung → übersteigerter Nationalismus\n• Wirtschaftliche Probleme durch Reparationen\n• Ermordung von Politikern, die den Vertrag unterschrieben\n• Nährboden für Dolchstoßlegende + Antirepublikanismus"}, {"question": "Was war die Dolchstoßlegende?", "answer": "• Propagandalüge von Militär + nationalistischen Politikern (v.a. Hindenburg)\n• Inhalt: Deutsches Heer wurde nicht besiegt → 'Dolchstoß von hinten' durch Republik\n• Schuldige: Sozialdemokraten, Juden, Demokraten, Streikende\n• Folgen: Republikanische Politiker = 'Landesverräter'; Radikalisierung nach rechts"}, {"question": "Was war die Justizblindheit in der Weimarer Republik?", "answer": "• Viele Richter aus dem Kaiserreich → konservativ + monarchisch geprägt\n• Strukturelle Ungerechtigkeit: Linke sehr hart bestraft, Rechte milde\n• Beispiel: Hitler nach Putsch → 5 Jahre, nach 9 Monaten frei"}, {"question": "Was war der Kapp-Lüttwitz-Putsch (1920)?", "answer": "Ursachen: Ablehnung Republik, Dolchstoßlegende, Wirtschaftskrise\nAnlass: Reichswehr auf 100.000 Mann + Auflösung Freikorps\nVerlauf: 13.03.1920 Besetzung Berlin → Reichswehr weigert sich Putsch niederzuschlagen → Generalstreik → 17.03. Zusammenbruch\nFolgen: Erstarken der Extreme, WR-Koalition ohne Mehrheit"}, {"question": "Was war der Ruhrkampf (1923) und welche Folge hatte er?", "answer": "• Rückstand bei Reparationsleistungen\n• Franzosen + Belgier besetzen Ruhrgebiet\n• Generalstreik + finanzielle Unterstützung der Streikenden durch Reich\n• Folge: Hyperinflation → wirtschaftlicher Zusammenbruch"}, {"question": "Was waren die Ursachen der Hyperinflation 1923?", "answer": "• Hohe Kriegskosten → Reparationszahlungen\n• Finanzielle Unterstützung Ruhrkampf-Streikende\n• Gebietsverluste → weniger Einnahmen\n• Mehr Geld gedruckt → Menge steigt → Geld verliert Wert\nLösung: Währungsreform (Rentenmark)"}, {"question": "Was waren die politischen Folgen der Hyperinflation 1923?", "answer": "• Unzufriedenheit + Vertrauensverlust in Republik\n• Politische Radikalisierung\n• Hitlerputsch (Nov. 1923)\n• Aber: Währungsreform → Ende der Inflation → Beginn Stabilisierung"}, {"question": "Wie stabilisierte sich die Weimarer Republik 1924–1929?", "answer": "• August 1923: Regierungswechsel → Gustav Stresemann = Kanzler\n• Ende passiver Widerstand im Ruhrgebiet\n• Währungsreform → Ende Hyperinflation\n• Dawes-Plan (1924): US-Kredite, geregelte Reparationen\n• Locarno-Verträge (1925): Westgrenzen anerkannt\n• Eintritt in den Völkerbund (1926)"}, {"question": "Welche drei politischen Lager standen sich in der WR gegenüber?", "answer": "1. Demokratisches Lager (Weimarer Koalition): SPD, Zentrum, DDP → Demokratie stärken\n2. Radikale Linke (KPD): sozialistische Revolution + Räterepublik\n3. Radikale Rechte (DNVP, nationalistische Gruppen): Abschaffung der Republik"}, {"question": "Welche Bewertung bekommt die Novemberrevolution?", "answer": "✅ Abschaffung der Monarchie → parlamentarische Demokratie\n✅ Frauenrechte, Arbeitsbedingungen, Existenzminimum gesichert\n❌ Undemokratische Strukturen in Justiz + Militär bleiben\n❌ Spaltung KPD/USPD und MSPD dauerhaft\n❌ Toleranz der Gewalt der Freikorps"}];
+let fcDeck = [...cards.keys()], fcCur = 0, fcKnown = new Set(), fcNot = new Set(), fcFlipped = false;
+function fcRender() {
+  const c = cards[fcDeck[fcCur]];
+  document.getElementById('q-text').textContent = c.question;
+  document.getElementById('a-text').textContent = c.answer;
+  document.getElementById('fc-counter').textContent = `Karte ${fcCur+1} / ${fcDeck.length}`;
+  document.getElementById('btn-prev').disabled = fcCur === 0;
+  document.getElementById('btn-next').disabled = fcCur === fcDeck.length - 1;
+  const w = document.getElementById('card-wrap');
+  w.classList.remove('flipped'); fcFlipped = false;
+  document.getElementById('v-row').classList.remove('vis');
+  fcUpdateStats();
+}
+function fcFlip() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('card-wrap').classList.toggle('flipped', fcFlipped);
+  if (fcFlipped) document.getElementById('v-row').classList.add('vis');
+}
+function verdict(ok) {
+  const i = fcDeck[fcCur];
+  if (ok) { fcKnown.add(i); fcNot.delete(i); } else { fcNot.add(i); fcKnown.delete(i); }
+  fcUpdateStats();
+  if (fcCur < fcDeck.length - 1) { fcCur++; fcRender(); } else { fcShowDone(); }
+}
+function fcNav(d) { fcCur = Math.max(0, Math.min(fcDeck.length-1, fcCur+d)); fcRender(); }
+function fcUpdateStats() {
+  const t = fcDeck.length;
+  const k = fcDeck.filter(i => fcKnown.has(i)).length;
+  const n = fcDeck.filter(i => fcNot.has(i)).length;
+  document.getElementById('fc-k').textContent = `${k} gewusst`;
+  document.getElementById('fc-r').textContent = `${t-k-n} offen`;
+  document.getElementById('fc-n').textContent = `${n} nicht gewusst`;
+  document.getElementById('bar-k').style.width = `${(k/cards.length)*100}%`;
+  document.getElementById('bar-n').style.width = `${(n/cards.length)*100}%`;
+}
+function fcShowDone() {
+  document.getElementById('fc-main').style.display = 'none';
+  const k = fcDeck.filter(i => fcKnown.has(i)).length;
+  const n = fcDeck.filter(i => fcNot.has(i)).length;
+  document.getElementById('done-k').textContent = k;
+  document.getElementById('done-n').textContent = n;
+  document.getElementById('fc-done').classList.add('vis');
+}
+function fcHideDone() {
+  document.getElementById('fc-main').style.display = '';
+  document.getElementById('fc-done').classList.remove('vis');
+}
+function fcResetWrong() {
+  if ([...fcNot].length === 0) { fcResetAll(); return; }
+  fcDeck = [...fcNot]; fcKnown.clear(); fcNot.clear(); fcCur = 0; fcHideDone(); fcRender();
+}
+function fcResetAll() {
+  fcDeck = [...cards.keys()]; fcKnown.clear(); fcNot.clear(); fcCur = 0; fcHideDone(); fcRender();
+}
+document.getElementById('card-wrap').addEventListener('click', fcFlip);
+document.addEventListener('keydown', e => {
+  if (document.getElementById('panel-fc').classList.contains('active')) {
+    if (e.target.tagName === 'BUTTON') return;
+    if (e.code === 'Space') { e.preventDefault(); fcFlip(); }
+    if (e.code === 'ArrowRight' && !fcFlipped) fcNav(1);
+    if (e.code === 'ArrowLeft' && !fcFlipped) fcNav(-1);
+    if (e.code === 'KeyY' && fcFlipped) verdict(true);
+    if (e.code === 'KeyN' && fcFlipped) verdict(false);
+  }
+});
+
+// ═══ QUIZ ═══
+const questions = [{"question": "Was beschloss der Kronrat um Kaiser Wilhelm II. am 30. September 1918?", "options": ["Sofortige Kapitulation ohne Bedingungen", "Parlamentarisierungserlass: Parlament statt Kaiser verantwortlich für Regierung", "Weiterkämpfen bis zum letzten Soldaten", "Abdankung des Kaisers und Ausrufung der Republik"], "correctIndex": 1, "hint": "Es war eine 'Revolution von oben'", "correctExplanation": "Richtig! Der Parlamentarisierungserlass machte das Parlament verantwortlich für die Regierung – eine kontrollierte Reform von oben, um eine unkontrollierte Revolution von unten zu verhindern.", "wrongExplanation": "Der Kronrat beschloss den Parlamentarisierungserlass: Parlament (nicht mehr Kaiser) verantwortlich für die Regierung → Deutschland zur parlamentarischen Monarchie."}, {"question": "Welche zwei Republiken wurden am 9. November 1918 ausgerufen?", "options": ["Demokratische Republik (Ebert) und Volksrepublik (Luxemburg)", "Parlamentarische Republik (Scheidemann) und sozialistische Räterepublik (Liebknecht)", "Kaiserliche Republik (Hindenburg) und Arbeiterrepublik (Liebknecht)", "Bundesrepublik (Scheidemann) und Sowjetrepublik (Luxemburg)"], "correctIndex": 1, "hint": "MSPD vs. USPD/Spartakusbund", "correctExplanation": "Genau! Scheidemann (MSPD) rief die parlamentarische Republik aus, Liebknecht (USPD/Spartakusbund) die sozialistische Räterepublik – zwei konkurrierende Vorstellungen für Deutschlands Zukunft.", "wrongExplanation": "Scheidemann (MSPD) rief die parlamentarische Republik aus, Liebknecht (USPD) die sozialistische Räterepublik. Das war der Kern des Machtkampfs zwischen gemäßigter und radikaler Linke."}, {"question": "Was vereinbarte der Ebert-Groener-Pakt (10. November 1918)?", "options": ["Abschaffung der Armee und Bildung einer Volkswehr", "Armee unterstützt Eberts Regierung; Ebert garantiert Bestand der Armee und keine sozialistische Revolution", "Groener tritt als Armeeführer zurück; Ebert übernimmt Oberbefehl", "Sofortige Neuwahlen unter Kontrolle des Militärs"], "correctIndex": 1, "hint": "Kurzfristig wichtig, langfristig problematisch", "correctExplanation": "Richtig! Die Armee schützte die Regierung vor den Spartakisten; Ebert garantierte dafür den Bestand der Armee. Langfristig problematisch: Die Armee blieb antidemokratisch geprägt.", "wrongExplanation": "Der Pakt: Armee unterstützt Ebert (Schutz vor Spartakisten); Ebert garantiert Bestand der Armee + keine sozialistische Revolution. Kurzfristig stabilisierend, langfristig belastend."}, {"question": "Was war das Ziel des Spartakusaufstands (Januar 1919) und wie endete er?", "answer": "", "options": ["Ziel: parlamentarische Demokratie; endete mit freier Wahl", "Ziel: Militärdiktatur; wurde durch Generalstreik beendet", "Ziel: sozialistische Räterepublik; blutige Niederschlagung durch Freikorps, Luxemburg + Liebknecht ermordet", "Ziel: Wiederherstellung der Monarchie; scheiterte an der Reichswehr"], "correctIndex": 2, "hint": "Rosa Luxemburg und Karl Liebknecht waren die Führungsfiguren", "correctExplanation": "Korrekt! Die Spartakisten wollten eine sozialistische Räterepublik. Der Aufstand wurde von Freikorps und Regierungstruppen niedergeschlagen – Luxemburg und Liebknecht wurden ermordet.", "wrongExplanation": "Ziel der Spartakisten: sozialistische Räterepublik. Niederschlagung durch Freikorps + Regierungstruppen. Luxemburg + Liebknecht ermordet. 156 Tote. Folge: endgültige Spaltung der Linken."}, {"question": "Was war eine wichtige Folge des Stinnes-Legien-Abkommens (15. November 1918)?", "options": ["Verstaatlichung aller Großbetriebe", "Offizielle Anerkennung der Gewerkschaften + 8-Stunden-Tag ohne Lohnabzug", "Auflösung aller Gewerkschaften zugunsten einer Einheitsgewerkschaft", "Einführung der 40-Stunden-Woche und Mindestlohn"], "correctIndex": 1, "hint": "Vereinbarung zwischen Arbeitgebern und Gewerkschaften", "correctExplanation": "Richtig! Das Abkommen anerkannte Gewerkschaften offiziell, garantierte den 8-Stunden-Tag ohne Lohnabzug, Koalitions- und Streikrecht sowie Betriebsräte.", "wrongExplanation": "Das Stinnes-Legien-Abkommen: offizielle Anerkennung der Gewerkschaften, 8-Stunden-Tag ohne Lohnabzug, Garantie von Koalitions- und Streikrecht, Betriebsräte."}, {"question": "Wann fand die erste demokratische Wahl in Deutschland statt und was war das Ergebnis?", "options": ["9. November 1918 – MSPD erhielt 80% der Stimmen", "19. Januar 1919 – SPD stärkste Partei, Weimarer Koalition gebildet (SPD + Zentrum + DDP)", "28. Juni 1919 – NSDAP erstmals im Reichstag vertreten", "11. August 1919 – Weimarer Verfassung direkt per Volksabstimmung verabschiedet"], "correctIndex": 1, "hint": "Frauenwahlrecht + 83% Wahlbeteiligung", "correctExplanation": "Korrekt! 19.01.1919 – erste demokratische Wahl mit Frauenwahlrecht, Wahlalter ab 20, 83% Beteiligung. SPD stärkste Fraktion → Weimarer Koalition.", "wrongExplanation": "19.01.1919: erste demokratische Wahl Deutschlands. Frauenwahlrecht + Wahlalter ab 20. 83% Beteiligung. SPD stärkste Fraktion → Weimarer Koalition (SPD + Zentrum + DDP)."}, {"question": "Was ist Artikel 48 der Weimarer Verfassung und warum war er problematisch?", "options": ["Garantierte Pressefreiheit; wurde von linken Regierungen missbraucht", "Notverordnungsrecht des Reichspräsidenten; ermöglichte Regieren ohne Parlament, Grundrechte außer Kraft zu setzen", "Regelte das Verhältniswahlrecht; führte zu Parteienzersplitterung", "Bestimmte die Amtszeit des Kanzlers; wurde von Hindenburg ignoriert"], "correctIndex": 1, "hint": "Größte Schwäche der Weimarer Verfassung", "correctExplanation": "Richtig! Art. 48 gab dem Reichspräsidenten das Recht, in Notfällen per Verordnung ohne Reichstag zu regieren und Grundrechte außer Kraft zu setzen. Ab 1930 wurde er systematisch missbraucht.", "wrongExplanation": "Art. 48 = Notverordnungsrecht des Reichspräsidenten. Er konnte ohne Reichstag regieren + Grundrechte außer Kraft setzen. Größte Schwäche der WR – ab 1930 massiv missbraucht."}, {"question": "Was besagte die Dolchstoßlegende?", "options": ["Deutschland hatte den Krieg gewonnen, wurde aber durch den Versailler Vertrag betrogen", "Das Militär hatte den Krieg verloren, weil es zu wenige Waffen hatte", "Das deutsche Heer wurde nicht besiegt; ein 'Dolchstoß von hinten' durch Sozialdemokraten, Juden und Demokraten habe Deutschland verraten", "Der Kaiser hatte den Krieg absichtlich verloren, um die Monarchie abzuschaffen"], "correctIndex": 2, "hint": "Verbreitet von Hindenburg und nationalistischen Politikern", "correctExplanation": "Genau! Die Dolchstoßlegende behauptete, Deutschland sei nicht besiegt worden, sondern von innen verraten worden. Dadurch wurden republikanische Politiker zu 'Landesverrätern' erklärt.", "wrongExplanation": "Dolchstoßlegende: Heer nicht besiegt, sondern 'von hinten erdolcht' durch Sozialdemokraten, Juden, Demokraten. Folge: Republikanische Politiker = Landesverräter → Ermordungen, Radikalisierung."}, {"question": "Warum scheiterte der Kapp-Lüttwitz-Putsch (1920)?", "options": ["Die Reichswehr schlug den Putsch militärisch nieder", "Die Alliierten intervenierten militärisch", "Reichswehr weigerte sich, gegen Putschisten vorzugehen; Regierung rief Generalstreik aus → Zusammenbruch des Putsches", "Kapp und Lüttwitz wurden bereits am ersten Tag verhaftet"], "correctIndex": 2, "hint": "Die Bevölkerung spielte eine entscheidende Rolle", "correctExplanation": "Richtig! Die Reichswehr weigerte sich, den Putsch niederzuschlagen ('Reichswehr schießt nicht auf Reichswehr'). Die Regierung rief den Generalstreik aus – die Bevölkerung legte das Land lahm.", "wrongExplanation": "Reichswehr verweigerte Einsatz gegen Putschisten. Regierung rief Generalstreik aus. 17.03.1920: Zusammenbruch des Putsches. Zeigt: Reichswehr schützte Republik nicht aktiv."}, {"question": "Was war die Hauptursache der Hyperinflation 1923?", "options": ["Die Alliierten blockierten deutschen Außenhandel", "Ruhrkampf: Deutschland druckte massenhaft Geld zur Finanzierung des Generalstreiks + Reparationslasten", "Spekulanten kauften alle deutschen Goldreserven auf", "Die Weimarer Verfassung erlaubte keine Steuererhöhungen"], "correctIndex": 1, "hint": "Frankreich + Belgien spielten eine wichtige Rolle", "correctExplanation": "Korrekt! Franzosen + Belgier besetzten das Ruhrgebiet wegen Reparationsrückständen. Deutschland finanzierte den Generalstreik durch Gelddrucken → Menge steigt, Wert sinkt → Hyperinflation.", "wrongExplanation": "Ruhrkampf: Frankreich/Belgien besetzen Ruhrgebiet → Generalstreik → Finanzierung durch Gelddrucken → Hyperinflation. Dazu: Kriegskosten + Reparationen + Gebietsverluste als Vorbelastung."}, {"question": "Was war der Dawes-Plan (1924)?", "options": ["Ein britischer Plan zur militärischen Entwaffnung Deutschlands", "Ein US-amerikanischer Plan: US-Kredite für Deutschland + geregelte Reparationszahlungen → wirtschaftliche Stabilisierung", "Ein deutsch-französisches Abkommen zur Beendigung der Ruhrbesetzung", "Ein Völkerbund-Beschluss zur Halbierung der deutschen Reparationen"], "correctIndex": 1, "hint": "USA + Deutschland + Reparationen", "correctExplanation": "Richtig! Der Dawes-Plan: USA gewähren Deutschland Kredite → wirtschaftliche Stabilisierung → Deutschland zahlt Reparationen. Beginn der 'Goldenen Zwanziger'.", "wrongExplanation": "Dawes-Plan 1924: US-Kredite für Deutschland + geregelte Reparationszahlungen. Wirtschaftliche Stabilisierung → Beginn der Goldenen Zwanziger. Deutschland konnte Reparationen wieder zahlen."}, {"question": "Was unterschied den NS-Nationalismus vom bürgerlichen Nationalismus?", "options": ["Der NS-Nationalismus war friedlich, der bürgerliche befürwortete Krieg", "Der bürgerliche Nationalismus war rassistisch, der NS-Nationalismus kulturell", "Der NS-Nationalismus definierte Nation über Rasse statt Kultur/Geschichte und befürwortete offen Gewalt und Ostexpansion", "Es gab keinen Unterschied, beide wollten das Deutsche Reich wiederherstellen"], "correctIndex": 2, "hint": "Lebensraum im Osten + Rassenprinzip", "correctExplanation": "Richtig! NS-Nationalismus: Nation = Rasse (nicht Kultur/Geschichte). Offen: Lebensraum im Osten durch Krieg. Gewalt als legitimes Mittel. Das unterschied ihn fundamental vom bürgerlichen Nationalismus.", "wrongExplanation": "NS: Nation = Rasse (nicht Kultur/Geschichte). 'Arische Herrenrasse' als höchstwertig. Lebensraum im Osten durch Krieg. Gewalt offen befürwortet. Bürgerlicher Nationalismus: Kultur + Geschichte, kein Expansionskrieg."}, {"question": "Welche Schwäche der Weimarer Verfassung begünstigte die Parteienzersplitterung?", "options": ["Keine Pressefreiheit → keine öffentliche Kritik an kleinen Parteien", "Keine Sperrklausel beim Verhältniswahlrecht → jede Partei mit genug Stimmen kommt in den Reichstag", "Zu hohe Anforderungen für Parteigründungen → nur Splitterparteien konnten sich anmelden", "Der Reichspräsident konnte Parteien nach Belieben zulassen"], "correctIndex": 1, "hint": "Wahlsystem ohne Mindesthürde", "correctExplanation": "Richtig! Das Verhältniswahlrecht ohne Sperrklausel ließ auch kleinste Parteien in den Reichstag. Folge: 20+ Parteien, keine stabilen Mehrheiten, häufige Regierungswechsel.", "wrongExplanation": "Verhältniswahlrecht ohne Sperrklausel: Jede Partei mit genug Stimmen kommt in den Reichstag. Resultat: extreme Zersplitterung (20+ Parteien), instabile Koalitionen, häufige Regierungswechsel."}, {"question": "Was waren die Locarno-Verträge (1925)?", "options": ["Deutschland und Polen erkannten gegenseitig ihre Grenzen an", "Deutschland erkannte seine Westgrenzen freiwillig an; GB + F garantierten diese Grenzen → außenpolitische Entspannung", "Deutschland verzichtete auf alle Reparationszahlungen gegen Gebietsabtretungen", "Geheimvertrag zwischen Deutschland und der Sowjetunion gegen die Westmächte"], "correctIndex": 1, "hint": "Stresemann + Westgrenzen", "correctExplanation": "Genau! Deutschland erkannte die Westgrenzen freiwillig an (Elsass-Lothringen bleibt französisch). Großbritannien und Frankreich garantierten diese Grenzen. Ergebnis: außenpolitische Entspannung, 1926 Eintritt in den Völkerbund.", "wrongExplanation": "Locarno 1925: Deutschland erkennt Westgrenzen freiwillig an. GB + Frankreich garantieren sie. Entspannung + 1926 Eintritt in den Völkerbund. Stresemann als Architekt der Außenpolitik."}, {"question": "Warum war die Bewertung des Ebert-Groener-Pakts 'kurzfristig wichtig, langfristig problematisch'?", "options": ["Kurzfristig: beendete den Krieg; Langfristig: Deutschland musste Reparationen zahlen", "Kurzfristig: verhinderte Bürgerkrieg/Räterepublik; Langfristig: Armee blieb antidemokratisch, Regierung abhängig von ihr", "Kurzfristig: Groener wurde Kanzler; Langfristig: MSPD verlor alle Wahlen", "Kurzfristig: Streiks wurden beendet; Langfristig: Gewerkschaften wurden verboten"], "correctIndex": 1, "hint": "Antidemokratische Strukturen im Militär", "correctExplanation": "Richtig! Kurzfristig: verhinderte Bürgerkrieg und Räterepublik (Spartakisten). Langfristig: Armee blieb monarchisch/antidemokratisch geprägt. Regierung machte sich abhängig von Kräften, die sie eigentlich ablehnten.", "wrongExplanation": "Kurzfristig: verhinderte Bürgerkrieg + Räterepublik. Langfristig problematisch: Armee blieb antidemokratisch; Regierung abhängig von Kräften, die die Demokratie ablehnten. Belastet WR dauerhaft."}];
+let qCur = 0, qAnswers = new Array(questions.length).fill(null), qLocked = new Array(questions.length).fill(false);
+function qRender() {
+  const q = questions[qCur];
+  const total = questions.length;
+  document.getElementById('q-prog').style.width = `${((qCur+1)/total)*100}%`;
+  document.getElementById('q-counter').textContent = `Frage ${qCur+1} / ${total}`;
+  document.getElementById('q-question').textContent = q.question;
+  document.getElementById('q-hint').textContent = q.hint || '';
+  document.getElementById('q-hint').classList.remove('show');
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  q.options.forEach((o, i) => {
+    const div = document.createElement('div');
+    div.className = 'option' + (qLocked[qCur] ? ' locked' : '');
+    if (qLocked[qCur]) {
+      if (i === q.correctIndex) div.classList.add('correct');
+      else if (i === qAnswers[qCur] && qAnswers[qCur] !== q.correctIndex) div.classList.add('wrong');
+    }
+    div.innerHTML = `<div class="option-letter">${String.fromCharCode(65+i)}</div><div class="option-text">${o}</div>`;
+    if (!qLocked[qCur]) div.addEventListener('click', () => qAnswer(i));
+    opts.appendChild(div);
+  });
+  const fb = document.getElementById('q-feedback');
+  if (qLocked[qCur] && qAnswers[qCur] !== null) {
+    const correct = qAnswers[qCur] === q.correctIndex;
+    fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+    fb.textContent = correct ? (q.correctExplanation || '✓ Richtig!') : (q.wrongExplanation || `✗ Falsch. Richtig: ${q.options[q.correctIndex]}`);
+  } else { fb.className = 'feedback'; fb.textContent = ''; }
+  document.getElementById('q-prev').disabled = qCur === 0;
+  const nextBtn = document.getElementById('q-next');
+  if (qCur === total - 1) {
+    nextBtn.textContent = 'Fertig →';
+    nextBtn.onclick = qFinish;
+  } else { nextBtn.textContent = 'Weiter →'; nextBtn.onclick = () => qNav(1); }
+  nextBtn.disabled = !qLocked[qCur] && qCur < total - 1;
+}
+function qAnswer(i) {
+  if (qLocked[qCur]) return;
+  qAnswers[qCur] = i; qLocked[qCur] = true;
+  document.getElementById('q-next').disabled = false;
+  qRender();
+}
+function qNav(d) { qCur = Math.max(0, Math.min(questions.length-1, qCur+d)); qRender(); }
+function toggleHint() {
+  const h = document.getElementById('q-hint');
+  h.classList.toggle('show');
+}
+function qFinish() {
+  const right = qAnswers.filter((a,i) => a === questions[i].correctIndex).length;
+  const wrong = qAnswers.filter((a,i) => a !== null && a !== questions[i].correctIndex).length;
+  const skip = qAnswers.filter(a => a === null).length;
+  document.getElementById('qs-right').textContent = right;
+  document.getElementById('qs-wrong').textContent = wrong;
+  document.getElementById('qs-skip').textContent = skip;
+  document.getElementById('q-score').textContent = `${right}/${questions.length}`;
+  document.getElementById('quiz-main').style.display = 'none';
+  document.getElementById('quiz-done').classList.add('vis');
+}
+function qReset() {
+  qCur = 0; qAnswers = new Array(questions.length).fill(null); qLocked = new Array(questions.length).fill(false);
+  document.getElementById('quiz-main').style.display = '';
+  document.getElementById('quiz-done').classList.remove('vis');
+  qRender();
+}
+
+// ═══ TAB SWITCHING ═══
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ═══ INIT ═══
+fcRender();
+qRender();
+</script>
+</body>
+</html>
