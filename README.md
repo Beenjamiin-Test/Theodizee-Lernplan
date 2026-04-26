@@ -1,1 +1,1 @@
-# theoidizee Lernplan
+#geschi-lernplan
