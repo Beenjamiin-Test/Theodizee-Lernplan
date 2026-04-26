@@ -1,868 +1,944 @@
 <!DOCTYPE html>
 
-<html lang="de" style="background:#0e0e0f;color-scheme:dark">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0e0e0f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Theodizee — Klausurvorbereitung</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<title>Lernzettel Geschichte – Weimarer Republik & NS-Aufstieg</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;color-scheme:dark;}
-html,body{background:#0e0e0f;color:#e8e4dc;color-scheme:dark;}
+  :root {
+    --bg: #1a1410;
+    --surface: #231e18;
+    --surface2: #2d2720;
+    --gold: #c9a84c;
+    --gold-light: #e2c97e;
+    --red: #a83232;
+    --red-light: #c94545;
+    --green: #3a7a5a;
+    --green-light: #4e9e76;
+    --text: #e8dfc8;
+    --text-muted: #a09070;
+    --border: #3d3428;
+  }
 
-/* ── APP SHELL ── */
-.app-tabs {
-display:flex;
-background:#111;
-border-bottom:1px solid rgba(255,255,255,0.08);
-position:sticky;top:0;z-index:200;
-}
-.app-tab {
-flex:1;padding:14px 10px;
-font-family:‘JetBrains Mono’,monospace;
-font-size:12px;letter-spacing:1px;text-transform:uppercase;
-border:none;cursor:pointer;
-color:rgba(255,255,255,0.35);
-background:transparent;
-transition:all .2s;
-border-bottom:2px solid transparent;
-}
-.app-tab.active{color:#fff;border-bottom-color:#e8b86d;}
-.app-tab:hover{color:rgba(255,255,255,0.7);}
+- { margin: 0; padding: 0; box-sizing: border-box; }
 
-.app-view{display:none;}
-.app-view.active{display:block;}
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘Source Serif 4’, Georgia, serif;
+font-size: 15px;
+line-height: 1.75;
+padding: 2rem 1rem;
+}
 
-/* ══════════════════════════════════════
-LERNPLAN STYLES
-══════════════════════════════════════ */
-#view-plan{
-background:#0e0e0f;
-color:#e8e4dc;
-font-family:‘Outfit’,sans-serif;
-font-weight:300;
-min-height:100vh;
-}
-.plan-header{
-background:#161618;color:#e8e4dc;
-padding:28px 24px 22px;position:relative;overflow:hidden;
-border-bottom:1px solid rgba(255,255,255,.07);
-}
-.plan-header::before{content:’’;position:absolute;top:-50%;right:-10%;width:400px;height:400px;border:1px solid rgba(232,184,109,.06);border-radius:50%;}
-.plan-header::after{content:’’;position:absolute;bottom:-30%;right:5%;width:200px;height:200px;border:1px solid rgba(192,57,43,.05);border-radius:50%;}
-.plan-header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;position:relative;z-index:1;}
-.plan-subject-tag{font-family:‘JetBrains Mono’,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#e8b86d;margin-bottom:6px;}
-.plan-header h1{font-family:‘Playfair Display’,serif;font-size:clamp(22px,4vw,34px);font-weight:700;line-height:1.1;letter-spacing:-.5px;color:#e8e4dc;}
-.plan-header h1 em{font-style:italic;color:rgba(232,228,220,.4);}
-.exam-badge{background:#c0392b;color:#fff;padding:8px 14px;border-radius:4px;text-align:center;flex-shrink:0;}
-.exam-badge .date{font-family:‘JetBrains Mono’,monospace;font-size:16px;font-weight:500;display:block;}
-.exam-badge .label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;opacity:.85;}
-.progress-bar-outer{margin-top:16px;position:relative;z-index:1;}
-.progress-info{display:flex;justify-content:space-between;font-family:‘JetBrains Mono’,monospace;font-size:10px;color:rgba(232,228,220,.35);margin-bottom:5px;}
-.progress-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,#e8b86d,#c0392b);border-radius:2px;transition:width .6s ease;}
-.plan-container{max-width:780px;margin:0 auto;padding:24px 16px 48px;}
-.thinkers-strip{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px;padding:14px 16px;background:#1e1e21;border-left:3px solid #e8b86d;}
-.thinker-chip{font-family:‘JetBrains Mono’,monospace;font-size:10px;padding:3px 9px;border:1px solid rgba(255,255,255,.1);border-radius:2px;color:#6b6870;letter-spacing:.5px;}
-.thinker-chip.done{background:#e8b86d;color:#0e0e0f;border-color:#e8b86d;text-decoration:line-through;opacity:.5;}
-.day-card{background:#161618;border:1px solid rgba(255,255,255,.07);margin-bottom:10px;transition:box-shadow .2s;position:relative;border-radius:6px;}
-.day-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.3);}
-.day-card.is-today{border-color:#7eb8d4;border-width:2px;}
-.day-card.is-today::before{content:‘HEUTE’;position:absolute;top:-1px;right:14px;background:#7eb8d4;color:#0e0e0f;font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:2px;padding:2px 7px;border-radius:0 0 3px 3px;}
-.day-card.is-done{border-color:#4caf6e;opacity:.6;}
-.day-header{display:flex;align-items:center;padding:14px 16px;cursor:pointer;user-select:none;gap:12px;}
-.day-date{font-family:‘JetBrains Mono’,monospace;font-size:11px;color:#6b6870;min-width:82px;}
-.day-title{font-family:‘Playfair Display’,serif;font-size:16px;font-weight:400;flex:1;color:#e8e4dc;}
-.day-title strong{font-weight:700;}
-.day-status{display:flex;align-items:center;gap:7px;}
-.complete-btn{font-family:‘JetBrains Mono’,monospace;font-size:10px;letter-spacing:1px;padding:5px 11px;border:1px solid rgba(255,255,255,.15);background:transparent;cursor:pointer;color:#e8e4dc;transition:all .15s;text-transform:uppercase;border-radius:3px;}
-.complete-btn:hover{background:rgba(255,255,255,.08);}
-.complete-btn.done{background:#4caf6e;color:#fff;border-color:#4caf6e;}
-.chevron{font-size:11px;color:#6b6870;transition:transform .25s;}
-.day-body{padding:0 16px 16px;border-top:1px solid rgba(255,255,255,.05);display:none;}
-.day-body.open{display:block;}
-.thinker-section{margin-top:14px;}
-.thinker-name{font-family:‘Playfair Display’,serif;font-style:italic;font-size:14px;color:#7eb8d4;margin-bottom:5px;display:flex;align-items:center;gap:7px;}
-.thinker-name::after{content:’’;flex:1;height:1px;background:rgba(126,184,212,.15);}
-.content-list{list-style:none;padding:0;}
-.content-list li{font-size:13px;line-height:1.65;padding:3px 0 3px 14px;position:relative;color:rgba(232,228,220,.8);}
-.content-list li::before{content:’—’;position:absolute;left:0;color:#6b6870;font-size:10px;}
-.highlight{background:rgba(232,184,109,.15);padding:1px 5px;border-radius:2px;font-family:‘JetBrains Mono’,monospace;font-size:11px;color:#e8b86d;}
-.tip-box{margin-top:12px;padding:10px 14px;background:rgba(126,184,212,.06);border-left:2px solid #7eb8d4;font-size:12.5px;color:#7eb8d4;}
-.tip-box strong{font-weight:500;}
-.compare-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:14px;}
-.compare-table th{background:#1e1e21;color:#6b6870;padding:7px 10px;text-align:left;font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:1px;font-weight:400;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07);}
-.compare-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top;line-height:1.5;color:rgba(232,228,220,.8);}
-.compare-table tr:nth-child(even) td{background:rgba(255,255,255,.02);}
-.compare-table td:first-child{font-family:‘Playfair Display’,serif;font-style:italic;font-weight:700;white-space:nowrap;color:#e8e4dc;}
-.exam-checklist{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
-.check-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;}
-.check-item input[type=“checkbox”]{margin-top:3px;accent-color:#e8b86d;width:13px;height:13px;flex-shrink:0;cursor:pointer;}
-.check-item label{cursor:pointer;line-height:1.5;color:rgba(232,228,220,.85);}
-.check-item input:checked+label{text-decoration:line-through;color:#6b6870;}
-.plan-footer{margin-top:24px;padding:12px 16px;border:1px dashed rgba(255,255,255,.1);font-size:11.5px;color:#6b6870;font-family:‘JetBrains Mono’,monospace;line-height:1.6;border-radius:4px;}
+.page { max-width: 860px; margin: 0 auto; }
 
-/* ══════════════════════════════════════
-LERNZETTEL STYLES
-══════════════════════════════════════ */
-#view-lernzettel{
-–bg:#0e0e0f;–surface:#161618;–surface2:#1e1e21;
-–border:rgba(255,255,255,.07);–text:#e8e4dc;–muted:#6b6870;
-–epikur:#e8b86d;–leibniz:#7eb8d4;–voltaire:#d47e7e;
-–wiesel:#a07ed4;–jonas:#7ed4a0;–kushner:#d4a07e;–solle:#d47eb8;
-background:var(–bg);color:var(–text);
-font-family:‘Outfit’,sans-serif;font-weight:300;min-height:100vh;line-height:1.6;
+/* HEADER */
+header {
+text-align: center;
+padding: 3rem 2rem 2.5rem;
+border: 1px solid var(–border);
+background: var(–surface);
+margin-bottom: 2.5rem;
+position: relative;
+overflow: hidden;
 }
-.lz-subnav{
-background:rgba(14,14,15,.95);backdrop-filter:blur(10px);
-border-bottom:1px solid var(–border);
-padding:0 12px;display:flex;align-items:center;gap:0;
-overflow-x:auto;scrollbar-width:none;
+header::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+pointer-events: none;
 }
-.lz-subnav::-webkit-scrollbar{display:none;}
-.lz-btn{
-padding:11px 11px;font-size:11px;font-family:‘JetBrains Mono’,monospace;
-cursor:pointer;border:none;background:transparent;color:var(–muted);
-white-space:nowrap;transition:color .2s;flex-shrink:0;position:relative;
+.label {
+font-size: 0.72rem;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 0.75rem;
+font-family: ‘Source Serif 4’, serif;
+font-weight: 300;
 }
-.lz-btn::after{content:’’;position:absolute;bottom:0;left:11px;right:11px;height:2px;border-radius:2px;opacity:0;transition:opacity .2s;background:var(–active-lz,rgba(255,255,255,.4));}
-.lz-btn:hover{color:var(–text);}
-.lz-btn.active{color:var(–text);}
-.lz-btn.active::after{opacity:1;}
-.lz-main{max-width:860px;margin:0 auto;padding:28px 16px 60px;}
-.lz-card{display:none;animation:lzFadeIn .3s ease;}
-.lz-card.active{display:block;}
-@keyframes lzFadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.lz-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(–border);flex-wrap:wrap;}
-.lz-name{font-family:‘Libre Baskerville’,serif;font-size:clamp(22px,4vw,36px);font-weight:700;letter-spacing:-.5px;line-height:1.1;}
-.lz-name em{font-style:italic;font-size:.65em;display:block;margin-top:3px;color:var(–muted);}
-.lz-meta{text-align:right;flex-shrink:0;}
-.lz-dates{font-family:‘JetBrains Mono’,monospace;font-size:12px;color:var(–muted);display:block;}
-.lz-tag{display:inline-block;margin-top:5px;padding:2px 9px;border-radius:3px;font-size:9px;font-family:‘JetBrains Mono’,monospace;letter-spacing:1px;text-transform:uppercase;background:var(–surface2);color:var(–muted);}
-.lz-section{margin-bottom:22px;}
-.lz-label{font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.lz-label::after{content:’’;flex:1;height:1px;background:var(–border);}
-.core-box{padding:16px 18px;border-radius:7px;border-left:3px solid;background:var(–surface);margin-bottom:14px;}
-.core-box p{font-size:14px;line-height:1.75;}
-.core-box strong{font-weight:600;}
-.points{display:flex;flex-direction:column;gap:8px;}
-.point{display:flex;gap:12px;padding:12px 14px;background:var(–surface);border-radius:5px;border:1px solid var(–border);font-size:13.5px;line-height:1.6;align-items:flex-start;}
-.point-num{font-family:‘JetBrains Mono’,monospace;font-size:10px;color:var(–muted);min-width:18px;padding-top:2px;flex-shrink:0;}
-.point-text strong{font-weight:500;}
-.point-text em{font-style:italic;opacity:.85;}
-.quote-block{padding:16px 20px;background:var(–surface2);border-radius:5px;margin-bottom:8px;position:relative;}
-.quote-mark{font-family:‘Libre Baskerville’,serif;font-size:40px;line-height:0;position:absolute;top:24px;left:14px;color:var(–border);}
-.quote-text{font-family:‘Libre Baskerville’,serif;font-style:italic;font-size:13.5px;line-height:1.7;padding-left:18px;color:rgba(232,228,220,.85);}
-.quote-source{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-top:6px;padding-left:18px;}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:500px){.two-col{grid-template-columns:1fr;}}
-.mini-card{padding:13px 14px;background:var(–surface);border-radius:5px;border:1px solid var(–border);}
-.mini-card-label{font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
-.mini-card p{font-size:12.5px;line-height:1.6;color:rgba(232,228,220,.8);}
-.connections{display:flex;flex-direction:column;gap:8px;}
-.conn-item{padding:12px 14px;border-radius:5px;border:1px solid rgba(74,158,255,.2);background:rgba(74,158,255,.04);display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.6;}
-.conn-type{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:2px;flex-shrink:0;margin-top:1px;}
-.conn-vs{background:rgba(212,126,126,.2);color:#d47e7e;}
-.conn-sim{background:rgba(126,212,160,.2);color:#7ed4a0;}
-.conn-ext{background:rgba(126,184,212,.2);color:#7eb8d4;}
-.klausur-box{padding:14px 16px;border-radius:7px;background:rgba(232,184,109,.06);border:1px solid rgba(232,184,109,.2);font-size:13.5px;line-height:1.7;}
-.klausur-box strong{font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:6px;color:#e8b86d;}
-/* compare tab */
-.matrix{overflow-x:auto;margin-bottom:24px;}
-.matrix table{width:100%;border-collapse:collapse;font-size:12px;min-width:560px;}
-.matrix th{background:var(–surface2);padding:9px 12px;text-align:left;font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted);border-bottom:1px solid var(–border);font-weight:400;}
-.matrix td{padding:10px 12px;border-bottom:1px solid var(–border);vertical-align:top;line-height:1.5;font-size:12.5px;}
-.matrix td:first-child{font-family:‘Libre Baskerville’,serif;font-style:italic;font-weight:700;white-space:nowrap;}
-.matrix tr:hover td{background:rgba(255,255,255,.02);}
-.timeline{position:relative;padding-left:24px;margin-bottom:24px;}
-.timeline::before{content:’’;position:absolute;left:8px;top:0;bottom:0;width:1px;background:var(–border);}
-.tl-item{position:relative;margin-bottom:16px;}
-.tl-dot{position:absolute;left:-20px;top:4px;width:7px;height:7px;border-radius:50%;border:2px solid var(–bg);}
-.tl-year{font-family:‘JetBrains Mono’,monospace;font-size:10px;color:var(–muted);margin-bottom:2px;}
-.tl-content{font-size:13.5px;line-height:1.6;}
-.tl-name{font-weight:600;}
-.pair-connections{display:flex;flex-direction:column;gap:10px;}
-.pair{padding:14px 16px;background:var(–surface);border-radius:7px;border:1px solid var(–border);}
-.pair-header{font-family:‘Libre Baskerville’,serif;font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.pair-arrow{color:var(–muted);font-size:13px;}
-.pair-body{font-size:13px;line-height:1.7;color:rgba(232,228,220,.8);}
-.pair-tag{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-left:auto;}
+h1 {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: clamp(1.6rem, 4vw, 2.6rem);
+font-weight: 900;
+color: var(–gold-light);
+line-height: 1.2;
+margin-bottom: 0.5rem;
+}
+.subtitle {
+color: var(–text-muted);
+font-size: 0.9rem;
+font-style: italic;
+margin-top: 0.75rem;
+}
+.gold-line {
+width: 60px;
+height: 2px;
+background: var(–gold);
+margin: 1rem auto;
+}
+
+/* ── PROGRESS WIDGET ── */
+.progress-widget {
+background: var(–surface);
+border: 1px solid var(–border);
+margin-bottom: 2.5rem;
+overflow: hidden;
+}
+.pw-header {
+padding: 1rem 1.75rem;
+border-bottom: 1px solid var(–border);
+background: rgba(201,168,76,0.04);
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 0.75rem;
+}
+.pw-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 1rem;
+font-weight: 700;
+color: var(–gold-light);
+}
+.pw-right {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+}
+.pw-bar-bg {
+width: 160px;
+height: 6px;
+background: var(–border);
+border-radius: 3px;
+overflow: hidden;
+}
+.pw-bar-fill {
+height: 100%;
+width: 0%;
+background: linear-gradient(90deg, var(–gold), var(–gold-light));
+border-radius: 3px;
+transition: width 0.4s ease;
+}
+.pw-pct {
+font-size: 0.82rem;
+font-weight: 700;
+color: var(–gold);
+min-width: 2.8rem;
+text-align: right;
+}
+.pw-reset {
+font-size: 0.72rem;
+color: var(–text-muted);
+background: none;
+border: 1px solid var(–border);
+padding: 0.2rem 0.6rem;
+cursor: pointer;
+font-family: inherit;
+transition: color 0.2s, border-color 0.2s;
+}
+.pw-reset:hover { color: var(–text); border-color: var(–text-muted); }
+
+.pw-topics {
+padding: 1.1rem 1.75rem 0.5rem;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+gap: 0.3rem 1rem;
+}
+.tc {
+display: flex;
+align-items: flex-start;
+gap: 0.55rem;
+cursor: pointer;
+padding: 0.35rem 0.4rem;
+transition: background 0.15s;
+user-select: none;
+border-radius: 2px;
+}
+.tc:hover { background: rgba(201,168,76,0.05); }
+.tc input[type=“checkbox”] {
+appearance: none;
+-webkit-appearance: none;
+width: 15px;
+height: 15px;
+min-width: 15px;
+border: 1px solid var(–border);
+background: var(–surface2);
+cursor: pointer;
+position: relative;
+margin-top: 0.28rem;
+transition: background 0.18s, border-color 0.18s;
+flex-shrink: 0;
+}
+.tc input[type=“checkbox”]:checked {
+background: var(–green);
+border-color: var(–green-light);
+}
+.tc input[type=“checkbox”]:checked::after {
+content: ‘✓’;
+position: absolute;
+inset: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 10px;
+color: #fff;
+font-weight: 700;
+line-height: 15px;
+text-align: center;
+}
+.tc-label {
+font-size: 0.84rem;
+color: var(–text-muted);
+line-height: 1.45;
+transition: color 0.2s;
+}
+.tc.done .tc-label {
+color: var(–green-light);
+text-decoration: line-through;
+text-decoration-color: rgba(78,158,118,0.4);
+}
+.pw-summary {
+padding: 0.55rem 1.75rem 0.9rem;
+font-size: 0.8rem;
+color: var(–text-muted);
+font-style: italic;
+border-top: 1px solid var(–border);
+margin-top: 0.5rem;
+}
+
+/* SECTION */
+.section {
+background: var(–surface);
+border: 1px solid var(–border);
+margin-bottom: 2rem;
+overflow: hidden;
+}
+.section-header {
+padding: 1.1rem 1.75rem;
+display: flex;
+align-items: center;
+gap: 1rem;
+border-bottom: 1px solid var(–border);
+}
+.section-header.weimar      { background: rgba(201,168,76,0.07); }
+.section-header.ns          { background: rgba(168,50,50,0.10); }
+.section-header.zusammenhang{ background: rgba(58,122,90,0.08); }
+
+.section-num {
+font-family: ‘Playfair Display’, serif;
+font-size: 2rem;
+font-weight: 700;
+line-height: 1;
+opacity: 0.35;
+}
+.section-header.weimar       .section-num { color: var(–gold); }
+.section-header.ns           .section-num { color: var(–red-light); }
+.section-header.zusammenhang .section-num { color: var(–green-light); }
+
+.section-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.25rem;
+font-weight: 700;
+}
+.section-header.weimar       .section-title { color: var(–gold-light); }
+.section-header.ns           .section-title { color: #e07070; }
+.section-header.zusammenhang .section-title { color: var(–green-light); }
+
+.section-body { padding: 1.5rem 1.75rem; }
+
+.subsection { margin-bottom: 1.75rem; }
+.subsection:last-child { margin-bottom: 0; }
+
+h3 {
+font-family: ‘Playfair Display’, serif;
+font-size: 1rem;
+font-weight: 700;
+margin-bottom: 0.6rem;
+padding-bottom: 0.35rem;
+border-bottom: 1px solid var(–border);
+}
+.weimar      h3 { color: var(–gold);       border-color: rgba(201,168,76,0.2); }
+.ns-body     h3 { color: var(–red-light);  border-color: rgba(168,50,50,0.25); }
+.zusammen-body h3 { color: var(–green-light); border-color: rgba(58,122,90,0.25); }
+
+p { margin-bottom: 0.6rem; color: var(–text); }
+p:last-child { margin-bottom: 0; }
+
+/* FACTOR CARDS */
+.factor-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+margin: 1rem 0;
+}
+.factor-card {
+padding: 1rem 1.1rem;
+border: 1px solid;
+position: relative;
+}
+.factor-card.destab { border-color: rgba(168,50,50,0.4); background: rgba(168,50,50,0.05); }
+.factor-card.stab   { border-color: rgba(58,122,90,0.4);  background: rgba(58,122,90,0.05); }
+.factor-card-label {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+font-weight: 600;
+margin-bottom: 0.5rem;
+}
+.factor-card.destab .factor-card-label { color: var(–red-light); }
+.factor-card.stab   .factor-card-label { color: var(–green-light); }
+.factor-card h4 {
+font-family: ‘Playfair Display’, serif;
+font-size: 0.95rem;
+margin-bottom: 0.4rem;
+color: var(–text);
+}
+.factor-card p { font-size: 0.87rem; color: var(–text-muted); margin: 0; line-height: 1.6; }
+
+/* TIMELINE */
+.timeline {
+margin: 0.75rem 0;
+position: relative;
+padding-left: 1.5rem;
+border-left: 2px solid rgba(168,50,50,0.3);
+}
+.tl-item { margin-bottom: 1.1rem; position: relative; }
+.tl-item::before {
+content: ‘’;
+position: absolute;
+left: -1.6rem; top: 0.45rem;
+width: 8px; height: 8px;
+border-radius: 50%;
+background: var(–red-light);
+border: 2px solid var(–bg);
+}
+.tl-year {
+font-family: ‘Playfair Display’, serif;
+font-size: 0.8rem;
+font-weight: 700;
+color: var(–red-light);
+letter-spacing: 0.05em;
+margin-bottom: 0.1rem;
+}
+.tl-text { font-size: 0.9rem; color: var(–text); line-height: 1.6; }
+.tl-text strong { color: var(–text); font-weight: 600; }
+
+/* KEY TERMS */
+.keyterms { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
+.kt {
+background: rgba(201,168,76,0.08);
+border: 1px solid rgba(201,168,76,0.25);
+color: var(–gold-light);
+font-size: 0.8rem;
+padding: 0.25rem 0.75rem;
+font-style: italic;
+}
+
+/* HIGHLIGHT BOX */
+.highlight {
+border-left: 3px solid;
+padding: 0.75rem 1rem;
+margin: 0.75rem 0;
+font-size: 0.9rem;
+line-height: 1.65;
+}
+.highlight.gold  { border-color: var(–gold);       background: rgba(201,168,76,0.06); color: var(–gold-light); }
+.highlight.red   { border-color: var(–red-light);  background: rgba(168,50,50,0.06);  color: #e07070; }
+.highlight.green { border-color: var(–green-light);background: rgba(58,122,90,0.07);  color: var(–green-light); }
+
+/* ARROW CHAIN */
+.chain {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 0.4rem;
+margin: 0.75rem 0;
+font-size: 0.85rem;
+}
+.chain-item { background: var(–surface2); border: 1px solid var(–border); padding: 0.3rem 0.7rem; color: var(–text); }
+.chain-arrow { color: var(–gold); font-size: 1rem; }
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(–border); margin: 1.25rem 0; }
+
+/* MERKE BOX */
+.merke {
+background: rgba(201,168,76,0.06);
+border: 1px solid rgba(201,168,76,0.3);
+padding: 1rem 1.25rem;
+margin: 1rem 0;
+}
+.merke-label {
+font-size: 0.68rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–gold);
+font-weight: 600;
+margin-bottom: 0.4rem;
+}
+.merke p { font-size: 0.9rem; color: var(–text); }
+
+/* ── DATA TABLES (only where they genuinely help) ── */
+.table-caption {
+font-size: 0.75rem;
+color: var(–text-muted);
+font-style: italic;
+margin-bottom: 0.4rem;
+margin-top: 0.8rem;
+}
+.data-table {
+width: 100%;
+border-collapse: collapse;
+margin: 0.25rem 0 0.9rem;
+font-size: 0.85rem;
+}
+.data-table th {
+text-align: left;
+padding: 0.45rem 0.75rem;
+font-family: ‘Playfair Display’, serif;
+font-weight: 700;
+font-size: 0.78rem;
+letter-spacing: 0.04em;
+border-bottom: 1px solid;
+white-space: nowrap;
+}
+.data-table.gold-table th { color: var(–gold);      border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05); }
+.data-table.red-table  th { color: var(–red-light); border-color: rgba(168,50,50,0.35); background: rgba(168,50,50,0.06); }
+.data-table td {
+padding: 0.4rem 0.75rem;
+border-bottom: 1px solid var(–border);
+color: var(–text);
+vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,0.015); }
+.data-table .yr  { font-family: ‘Playfair Display’, serif; font-weight: 700; color: var(–text-muted); white-space: nowrap; }
+.data-table .pct { font-weight: 700; color: var(–red-light); white-space: nowrap; }
+.data-table .note{ font-size: 0.78rem; color: var(–text-muted); font-style: italic; }
+
+/* mini bar inside table */
+.mini-bar-bg   { height: 7px; background: var(–border); border-radius: 4px; overflow: hidden; min-width: 80px; }
+.mini-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(–red), var(–red-light)); }
+
+/* FOOTER */
+footer {
+text-align: center;
+padding: 1.5rem;
+color: var(–text-muted);
+font-size: 0.8rem;
+font-style: italic;
+border-top: 1px solid var(–border);
+margin-top: 2.5rem;
+}
+
+strong { font-weight: 600; }
+em { font-style: italic; color: var(–text-muted); }
+ul { margin: 0.4rem 0 0.4rem 1.2rem; color: var(–text); }
+li { margin-bottom: 0.3rem; font-size: 0.9rem; line-height: 1.6; }
+
+@media (max-width: 600px) {
+.factor-grid   { grid-template-columns: 1fr; }
+.pw-topics     { grid-template-columns: 1fr; }
+.pw-bar-bg     { width: 100px; }
+.data-table    { font-size: 0.8rem; }
+.data-table th,
+.data-table td { padding: 0.35rem 0.5rem; }
+}
 </style>
 
 </head>
 <body>
+<div class="page">
 
-<!-- APP TABS -->
+  <!-- HEADER -->
 
-<div class="app-tabs">
-  <button class="app-tab active" onclick="switchView('plan')">📅 Lernplan</button>
-  <button class="app-tab" onclick="switchView('lernzettel')">📖 Lernzettel</button>
-</div>
+  <header>
+    <div class="label">Lernzettel · Geschichte · Klausur</div>
+    <h1>Weimarer Republik &amp;<br>Aufstieg des Nationalsozialismus</h1>
+    <div class="gold-line"></div>
+    <div class="subtitle">Stabilisierende &amp; destabilisierende Faktoren 1918–1934 · Ziel: 11–12 Punkte</div>
+  </header>
 
-<!-- ══════════════ LERNPLAN VIEW ══════════════ -->
+  <!-- ── LERNFORTSCHRITT ── -->
 
-<div id="view-plan" class="app-view active">
-  <div class="plan-header">
-    <div class="plan-header-top">
-      <div>
-        <div class="plan-subject-tag">Religion · Theodizee</div>
-        <h1>Lernplan <em>Klausur</em></h1>
-      </div>
-      <div class="exam-badge">
-        <span class="date">Fr 24.04</span>
-        <span class="label">Klausur</span>
-      </div>
-    </div>
-    <div class="progress-bar-outer">
-      <div class="progress-info">
-        <span id="progress-label">0 von 6 Tagen abgeschlossen</span>
-        <span id="progress-pct">0%</span>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    </div>
-  </div>
+  <div class="progress-widget">
+    <div class="pw-header">
+      <div class="pw-title">⚑ Mein Lernfortschritt</div>
+      <div class="pw-right">
+        <div class="pw-bar-bg"><div class="pw-bar-fill" id="pwFill"></div></div>
+        <div class="pw-pct" id="pwPct">0 %</div>
+        <button class="pw-reset" onclick="resetProgress()">Zurücksetzen</button>
+      </div>
+    </div>
+    <div class="pw-topics" id="pwTopics"></div>
+    <div class="pw-summary" id="pwSummary">Hake ab, was du sicher beherrschst.</div>
+  </div>
 
-  <div class="plan-container">
-    <div class="thinkers-strip">
-      <span id="chip-epikur" class="thinker-chip">Epikur</span>
-      <span id="chip-leibniz" class="thinker-chip">Leibniz</span>
-      <span id="chip-voltaire" class="thinker-chip">Voltaire</span>
-      <span id="chip-wiesel" class="thinker-chip">Elie Wiesel</span>
-      <span id="chip-jonas" class="thinker-chip">Hans Jonas</span>
-      <span id="chip-kushner" class="thinker-chip">Kushner</span>
-      <span id="chip-solle" class="thinker-chip">Sölle</span>
-    </div>
+  <!-- TEIL 1: WEIMARER REPUBLIK -->
+
+  <div class="section">
+    <div class="section-header weimar">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">Die Weimarer Republik (1918–1933)</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Stabilisierende &amp; destabilisierende Faktoren</div>
+      </div>
+    </div>
+    <div class="section-body weimar">
 
 ```
-<div class="day-card" id="day-1" data-day="1">
-  <div class="day-header" onclick="toggleDay(1)">
-    <div class="day-date">Sa 18.04</div>
-    <div class="day-title"><strong>Epikur</strong> — Das Trilemma</div>
-    <div class="day-status"><button class="complete-btn" id="btn-1" onclick="markDone(event,1)">Erledigt</button><span class="chevron" id="chev-1">▼</span></div>
-  </div>
-  <div class="day-body" id="body-1">
-    <div class="thinker-section">
-      <div class="thinker-name">Epikur (341–271 v. Chr.)</div>
-      <ul class="content-list">
-        <li>Formulierte das <span class="highlight">Epikureische Trilemma</span> — die Grundfrage aller Theodizee</li>
-        <li>3 Prämissen: Gott ist allmächtig / allwissend / allgütig — alle 3 zusammen unvereinbar mit Leid</li>
-        <li>Nicht will → nicht allgütig · Nicht kann → nicht allmächtig · Nicht weiß → nicht allwissend</li>
-        <li>Schluss: Mindestens ein Attribut muss falsch sein — oder Gott existiert nicht</li>
-        <li>Wichtig: Epikur liefert das <em>Problem</em>, keine Lösung — er ist die Ausgangsfrage</li>
-      </ul>
-    </div>
-    <div class="tip-box"><strong>Klausur:</strong> Epikur immer als Einstieg der Einleitung nutzen. Zeigt sofort Überblick.</div>
-  </div>
-</div>
+  <div class="subsection">
+    <h3>Entstehung &amp; Gründungskrise (1918/19)</h3>
+    <p>Das Deutsche Kaiserreich verlor den Ersten Weltkrieg. Am <strong>9. November 1918</strong> dankte Kaiser Wilhelm II. ab – Philipp Scheidemann rief die <strong>Republik</strong> aus. Damit entstand die Weimarer Republik unter denkbar schlechten Vorzeichen: Kriegsniederlage, wirtschaftliche Not und politisches Chaos prägten die Gründungsphase.</p>
+    <div class="highlight gold">
+      <strong>„Novemberverbrecher"-Mythos:</strong> Konservative und Militärs schufen die Legende, die Republik sei durch einen „Dolchstoß" aus dem Innern entstanden – nicht durch militärische Niederlage. Das belastete die Republik von Anfang an und lieferte der Rechten dauerhaft Propaganda-Material.
+    </div>
+    <p>Die neue Regierung unter Friedrich Ebert (SPD) schloss den <strong>Versailler Vertrag (1919)</strong> – eine schwere Hypothek für die junge Demokratie:</p>
 
-<div class="day-card" id="day-2" data-day="2">
-  <div class="day-header" onclick="toggleDay(2)">
-    <div class="day-date">So 19.04</div>
-    <div class="day-title"><strong>Leibniz</strong> — Die klassische Antwort</div>
-    <div class="day-status"><button class="complete-btn" id="btn-2" onclick="markDone(event,2)">Erledigt</button><span class="chevron" id="chev-2">▼</span></div>
-  </div>
-  <div class="day-body" id="body-2">
-    <div class="thinker-section">
-      <div class="thinker-name">Leibniz (1646–1716)</div>
-      <ul class="content-list">
-        <li>Prägte den Begriff <span class="highlight">Theodizee</span> (1710)</li>
-        <li>These: Wir leben in der <em>besten aller möglichen Welten</em></li>
-        <li>Universum ist vernetzt — Gott kann nichts ändern ohne alles zu verändern</li>
-        <li>Leid hat Funktion: kontrastiert das Gute, ermöglicht Freiheit</li>
-        <li>Ursprüngliche Unvollkommenheit liegt im Geschöpf, nicht in Gott</li>
-        <li>Kritik: Klingt zynisch angesichts realer Katastrophen</li>
-      </ul>
-    </div>
-    <div class="tip-box"><strong>Merke:</strong> Leibniz = Optimismus — behält alle 3 Attribute, rechtfertigt Leid durch höheren Plan.</div>
-  </div>
-</div>
+    <p class="table-caption">Versailler Vertrag 1919 – die vier zentralen Bestimmungen</p>
+    <table class="data-table gold-table">
+      <thead>
+        <tr><th>Bereich</th><th>Konkrete Regelung</th><th>Folge für die Republik</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kriegsschuld</strong></td>
+          <td>§ 231 – Deutschland allein schuldig</td>
+          <td class="note">Nationale Demütigung; Rechten als Propaganda-Grundlage</td>
+        </tr>
+        <tr>
+          <td><strong>Reparationen</strong></td>
+          <td>132 Milliarden Goldmark</td>
+          <td class="note">Wirtschaftliche Dauerbelastung, Mitursache der Inflation</td>
+        </tr>
+        <tr>
+          <td><strong>Gebiete</strong></td>
+          <td>Elsass-Lothringen, Posen, Danzig u. a.</td>
+          <td class="note">Nährboden für Nationalismus &amp; Revisionismus</td>
+        </tr>
+        <tr>
+          <td><strong>Militär</strong></td>
+          <td>Reichswehr max. 100.000 Mann</td>
+          <td class="note">Ressentiments im Militär; Dolchstoß-Legende</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<div class="day-card is-today" id="day-3" data-day="3">
-  <div class="day-header" onclick="toggleDay(3)">
-    <div class="day-date">Mo 20.04</div>
-    <div class="day-title"><strong>Voltaire + Elie Wiesel</strong></div>
-    <div class="day-status"><button class="complete-btn" id="btn-3" onclick="markDone(event,3)">Erledigt</button><span class="chevron" id="chev-3">▼</span></div>
-  </div>
-  <div class="day-body" id="body-3">
-    <div class="thinker-section">
-      <div class="thinker-name">Voltaire (1694–1778)</div>
-      <ul class="content-list">
-        <li>Reaktion auf <span class="highlight">Erdbeben Lissabon 1755</span> — 30.000 Tote</li>
-        <li>Satire <em>Candide</em>: Pangloss (= Leibniz-Parodie) erklärt alles für notwendig gut</li>
-        <li>Pointe: „Wenn dies die beste Welt ist, wie müssen die anderen sein?"</li>
-        <li>Kein Atheismus, aber: Optimismus ist Lüge und verharmlos Leid</li>
-      </ul>
-    </div>
-    <div class="thinker-section">
-      <div class="thinker-name">Elie Wiesel (1928–2016)</div>
-      <ul class="content-list">
-        <li>Holocaust-Überlebender, <em>Nacht</em> (1958)</li>
-        <li>Gott hat geschwiegen — Rosch-Haschana-Szene im Lager</li>
-        <li>Keine Abkehr, sondern <em>Klage gegen Gott</em> — Hiob-Tradition</li>
-        <li>„Ich war der Ankläger. Und Gott war der Angeklagte."</li>
-      </ul>
-    </div>
-    <div class="tip-box"><strong>Verbindung:</strong> Beide lehnen Rechtfertigungen ab — Voltaire abstrakt-philosophisch, Wiesel existenziell.</div>
-  </div>
-</div>
+  <hr class="divider">
 
-<div class="day-card" id="day-4" data-day="4">
-  <div class="day-header" onclick="toggleDay(4)">
-    <div class="day-date">Di 21.04</div>
-    <div class="day-title"><strong>Hans Jonas + Kushner</strong></div>
-    <div class="day-status"><button class="complete-btn" id="btn-4" onclick="markDone(event,4)">Erledigt</button><span class="chevron" id="chev-4">▼</span></div>
-  </div>
-  <div class="day-body" id="body-4">
-    <div class="thinker-section">
-      <div class="thinker-name">Hans Jonas (1903–1993)</div>
-      <ul class="content-list">
-        <li>These: <span class="highlight">Der ohnmächtige Gott</span> — Gott hat sich bei der Schöpfung entäußert (Kenosis)</li>
-        <li>Schwieg in Auschwitz nicht weil er nicht wollte, sondern weil er <em>nicht konnte</em></li>
-        <li>Güte + Verstehbarkeit bleiben erhalten — Allmacht fällt</li>
-        <li>Konsequenz: Mensch trägt volle Verantwortung für die Welt</li>
-      </ul>
-    </div>
-    <div class="thinker-section">
-      <div class="thinker-name">Harold Kushner (*1935)</div>
-      <ul class="content-list">
-        <li>Sohn Aaron starb an Progerie — persönlicher Ausgangspunkt</li>
-        <li>Ähnlich wie Jonas: Gott ist nicht allmächtig (Grenzen durch Naturgesetze)</li>
-        <li>Gott gibt uns Kraft — verhindert Leid aber nicht</li>
-        <li>Seelsorgerlich-therapeutisch statt philosophisch-spekulativ</li>
-      </ul>
-    </div>
-  </div>
-</div>
+  <div class="subsection">
+    <h3>Die Weimarer Verfassung (1919)</h3>
+    <p>Die Verfassung war für ihre Zeit fortschrittlich: allgemeines Wahlrecht (auch Frauen), Grundrechte, Parlamentarismus. Aber sie enthielt <strong>strukturelle Schwächen</strong>:</p>
+    <ul>
+      <li><strong>Verhältniswahlrecht</strong> → Splitterparteien, instabile Koalitionen, häufige Regierungswechsel</li>
+      <li><strong>Artikel 48</strong> (Notstandsparagraph) → Präsident kann per Dekret regieren, Umgehung des Parlaments – später von Hindenburg missbraucht</li>
+      <li><strong>Reichspräsident</strong> mit starker Machtstellung (Direktwahl, Ernennung des Reichskanzlers) – systemfremdes Element</li>
+    </ul>
+  </div>
 
-<div class="day-card" id="day-5" data-day="5">
-  <div class="day-header" onclick="toggleDay(5)">
-    <div class="day-date">Mi 22.04</div>
-    <div class="day-title"><strong>Dorothee Sölle</strong></div>
-    <div class="day-status"><button class="complete-btn" id="btn-5" onclick="markDone(event,5)">Erledigt</button><span class="chevron" id="chev-5">▼</span></div>
-  </div>
-  <div class="day-body" id="body-5">
-    <div class="thinker-section">
-      <div class="thinker-name">Dorothee Sölle (1929–2003)</div>
-      <ul class="content-list">
-        <li>Kritik am <span class="highlight">„theologischen Sadismus"</span>: Leid als Gotteswille deuten ist Kollaboration mit Unrecht</li>
-        <li>Neue Frage: „Wie werden unsere Schmerzen zu Gottes Schmerz?"</li>
-        <li>Gott als Mutter — leidet mit, tröstet, gibt Kraft</li>
-        <li><em>Praesentia Dei</em>: Gott leidet mit und an der ungerechten Welt</li>
-        <li>3-Phasen-Modell: Stummheit → Klage → politisches Handeln</li>
-      </ul>
-    </div>
-    <div class="tip-box"><strong>Klausur:</strong> 3-Phasen-Modell kennen — zeigt einen Prozess statt statischer Antwort.</div>
-  </div>
-</div>
+  <hr class="divider">
 
-<div class="day-card" id="day-6" data-day="6">
-  <div class="day-header" onclick="toggleDay(6)">
-    <div class="day-date">Do 23.04</div>
-    <div class="day-title"><strong>Wiederholung + Vergleich</strong></div>
-    <div class="day-status"><button class="complete-btn" id="btn-6" onclick="markDone(event,6)">Erledigt</button><span class="chevron" id="chev-6">▼</span></div>
-  </div>
-  <div class="day-body" id="body-6">
-    <table class="compare-table">
-      <thead><tr><th>Denker</th><th>Gottsbild</th><th>Antwort auf Leid</th><th>Kernbegriff</th></tr></thead>
-      <tbody>
-        <tr><td>Epikur</td><td>inexistent / begrenzt</td><td>Trilemma → kein allmächtiger Gott</td><td>Trilemma</td></tr>
-        <tr><td>Leibniz</td><td>allmächtig + allgütig</td><td>Beste mögliche Welt</td><td>Optimismus</td></tr>
-        <tr><td>Voltaire</td><td>skeptisch</td><td>Optimismus ist Illusion → handeln</td><td>Candide / Lissabon</td></tr>
-        <tr><td>Wiesel</td><td>geschwiegen / fraglich</td><td>Klage gegen Gott (Hiob)</td><td>Schweigen Gottes</td></tr>
-        <tr><td>Jonas</td><td>ohnmächtig, leidend</td><td>Gottsbild revidieren</td><td>Kenosis</td></tr>
-        <tr><td>Kushner</td><td>nicht allmächtig, nah</td><td>Trost durch Gottes Begleitung</td><td>Gottes Kraft in uns</td></tr>
-        <tr><td>Sölle</td><td>mitleidend, mütterlich</td><td>Klage → politisches Handeln</td><td>Praesentia Dei</td></tr>
-      </tbody>
-    </table>
-    <div class="tip-box" style="margin-top:12px"><strong>Klausur-Paarungen:</strong> Leibniz ↔ Jonas · Voltaire ↔ Leibniz · Wiesel ↔ Sölle · Jonas ↔ Kushner</div>
-  </div>
-</div>
+  <div class="subsection">
+    <h3>Destabilisierende Faktoren</h3>
+    <div class="factor-grid">
+      <div class="factor-card destab">
+        <div class="factor-card-label">Wirtschaft</div>
+        <h4>Hyperinflation 1923</h4>
+        <p>Reparationszahlungen, Ruhrbesetzung durch Frankreich, Gelddrucken → 1 Dollar = 4,2 Billionen Mark. Mittelstand verlor Ersparnisse. Vertrauen in den Staat erschüttert.</p>
+      </div>
+      <div class="factor-card destab">
+        <div class="factor-card-label">Wirtschaft</div>
+        <h4>Weltwirtschaftskrise 1929</h4>
+        <p>„Schwarzer Freitag" Oktober 1929. US-Kredite werden abgezogen. Massenarbeitslosigkeit: 6 Millionen Arbeitslose bis 1932. Radikale Parteien gewinnen massiv.</p>
+      </div>
+      <div class="factor-card destab">
+        <div class="factor-card-label">Politik</div>
+        <h4>Politischer Extremismus</h4>
+        <p>KPD (links) und NSDAP (rechts) bekämpfen die Republik offen. Straßenschlachten, politische Morde (Rathenau 1922). SA-Terror gegen politische Gegner.</p>
+      </div>
+      <div class="factor-card destab">
+        <div class="factor-card-label">Legitimität</div>
+        <h4>Fehlende Akzeptanz</h4>
+        <p>Viele Eliten (Militär, Justiz, Großgrundbesitzer, Bürokratie) lehnten die Demokratie ab. „Republik ohne Republikaner" – kein stabiles demokratisches Fundament.</p>
+      </div>
+      <div class="factor-card destab">
+        <div class="factor-card-label">Putschversuche</div>
+        <h4>Staatsfeindliche Aktionen</h4>
+        <p>Kapp-Putsch 1920 (Rechte), Hitlerputsch 1923 (München), kommunistische Aufstände. Staat wirkte handlungsunfähig – Putschisten wurden kaum bestraft.</p>
+      </div>
+      <div class="factor-card destab">
+        <div class="factor-card-label">Verfassung</div>
+        <h4>Strukturelle Mängel</h4>
+        <p>Verhältniswahlrecht → 30+ Parteien, instabile Koalitionen. Art. 48 ermöglichte Präsidialdiktatur. Ab 1930 regiert Brüning per Notverordnung ohne Parlamentsmehrheit.</p>
+      </div>
+    </div>
+  </div>
 
-<div class="day-card" id="day-exam">
-  <div class="day-header" onclick="toggleDay('exam')">
-    <div class="day-date" style="color:#c0392b;font-weight:500">Fr 24.04</div>
-    <div class="day-title" style="color:#c0392b"><strong>Klausurtag</strong></div>
-    <div class="day-status"><span class="chevron" id="chev-exam">▼</span></div>
-  </div>
-  <div class="day-body" id="body-exam">
-    <div class="exam-checklist">
-      <div class="check-item"><input type="checkbox" id="c1"><label for="c1">Nur Übersichtstabelle nochmal anschauen — nichts Neues lernen</label></div>
-      <div class="check-item"><input type="checkbox" id="c2"><label for="c2">Kernbegriffe der 7 Denker im Kopf durchgehen (ca. 10 min)</label></div>
-      <div class="check-item"><input type="checkbox" id="c3"><label for="c3">Epikur-Trilemma als Einstieg für Einleitung parat haben</label></div>
-      <div class="check-item"><input type="checkbox" id="c4"><label for="c4">In der Klausur: Position erklären → kritisch einordnen → vergleichen</label></div>
-      <div class="check-item"><input type="checkbox" id="c5"><label for="c5">Fachbegriffe: Theodizee, Trilemma, Optimismus, Kenosis, Praesentia Dei, theologischer Sadismus</label></div>
-    </div>
-  </div>
-</div>
+  <hr class="divider">
 
-<div class="plan-footer">Ziel: 11–12 Punkte · Abitur 2027 · Hessen</div>
-```
+  <div class="subsection">
+    <h3>Stabilisierende Faktoren</h3>
+    <div class="factor-grid">
+      <div class="factor-card stab">
+        <div class="factor-card-label">Wirtschaft</div>
+        <h4>Goldene Zwanziger (1924–29)</h4>
+        <p>Dawes-Plan 1924: US-Kredite stabilisieren die Wirtschaft. Wirtschaftsaufschwung, Vollbeschäftigung, kulturelle Blüte (Bauhaus, Weimarer Kultur). Parteien der Mitte gewinnen.</p>
+      </div>
+      <div class="factor-card stab">
+        <div class="factor-card-label">Diplomatie</div>
+        <h4>Außenpolitische Erfolge</h4>
+        <p>Stresemann: Locarno-Verträge 1925, Völkerbundbeitritt 1926. Deutschland kehrt in die Staatengemeinschaft zurück. Prestigegewinn für die Republik.</p>
+      </div>
+      <div class="factor-card stab">
+        <div class="factor-card-label">Währung</div>
+        <h4>Rentenmark 1923</h4>
+        <p>Einführung der Rentenmark beendet die Hyperinflation schlagartig. Finanzminister Schacht stabilisiert die Währung. Wirtschaftliches Fundament wieder hergestellt.</p>
+      </div>
+      <div class="factor-card stab">
+        <div class="factor-card-label">Verfassung</div>
+        <h4>Demokratische Institutionen</h4>
+        <p>Freie Presse, Gewerkschaften, Parteienvielfalt, Grundrechte. Reichstag als Debattenforum funktioniert. SPD und Zentrum als stabile demokratische Kräfte.</p>
+      </div>
+    </div>
+    <div class="merke">
+      <div class="merke-label">⚑ Merke: Kern-These</div>
+      <p>Die Weimarer Republik war dauerhaft instabil, weil sie von Anfang an von innen (Eliten ohne Demokratieverständnis) und außen (Versailles, Wirtschaftskrisen) unter Druck stand. Die <strong>stabilisierende Phase 1924–29</strong> war eine trügerische Ruhephase – die strukturellen Probleme blieben ungelöst.</p>
+    </div>
+  </div>
 
-  </div>
-</div>
-
-<!-- ══════════════ LERNZETTEL VIEW ══════════════ -->
-
-<div id="view-lernzettel" class="app-view">
-  <div class="lz-subnav" id="lz-subnav">
-    <button class="lz-btn active" onclick="showLZ('epikur')" id="lznav-epikur">Epikur</button>
-    <button class="lz-btn" onclick="showLZ('leibniz')" id="lznav-leibniz">Leibniz</button>
-    <button class="lz-btn" onclick="showLZ('voltaire')" id="lznav-voltaire">Voltaire</button>
-    <button class="lz-btn" onclick="showLZ('wiesel')" id="lznav-wiesel">Wiesel</button>
-    <button class="lz-btn" onclick="showLZ('jonas')" id="lznav-jonas">Jonas</button>
-    <button class="lz-btn" onclick="showLZ('kushner')" id="lznav-kushner">Kushner</button>
-    <button class="lz-btn" onclick="showLZ('solle')" id="lznav-solle">Sölle</button>
-    <button class="lz-btn" onclick="showLZ('compare')" id="lznav-compare">↔ Vergleich</button>
-  </div>
-
-  <div class="lz-main">
-
-```
-<!-- EPIKUR -->
-<div class="lz-card active" id="lz-epikur">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--epikur)">Epikur<em>Das Trilemma</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">341–271 v. Chr.</span><span class="lz-tag">Antike Philosophie</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--epikur)"><p>Epikur formuliert <strong>nicht</strong> eine Antwort auf das Leid — er formuliert das <strong>Problem selbst</strong>. Das Trilemma zeigt, dass Allmacht, Allgüte und Allwissenheit logisch unvereinbar sind mit Leid in der Welt. Er ist der <strong>Ausgangspunkt aller Theodizee-Debatten</strong>.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Das Trilemma im Detail</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Will Gott das Böse verhindern, kann es aber nicht</strong> → Er ist <em>nicht allmächtig</em>.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Kann Gott das Böse verhindern, will es aber nicht</strong> → Er ist <em>nicht allgütig</em>.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Will und kann Gott, greift aber nicht ein</strong> → Er ist <em>nicht allwissend</em> — oder existiert nicht.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Konsequenz:</strong> Mindestens eines der drei Attribute muss falsch sein. Alle drei gleichzeitig sind mit realem Leid logisch unvereinbar.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kontext</div>
-    <div class="two-col">
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--epikur)">Wer war Epikur?</div><p>Griechischer Philosoph. Gründete den Epikureismus. Ziel: Seelenfrieden durch Vernunft, nicht durch Götterfurcht. Das Trilemma dient der Befreiung von religiösem Aberglauben.</p></div>
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--epikur)">Überlieferung</div><p>Nicht direkt von Epikur überliefert — vom Theologen Laktanz (3. Jh. n. Chr.) als Zusammenfassung formuliert und seither so tradiert.</p></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-ext">Basis für</span>Leibniz nimmt das Trilemma als Ausgangspunkt und behauptet, alle 3 Attribute lassen sich aufrechterhalten.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Bestätigt von</span>Voltaire zeigt mit Lissabon: Das Trilemma ist real — Leibniz' Lösung ist gescheitert.</div>
-      <div class="conn-item"><span class="conn-type conn-ext">Gelöst durch</span>Jonas und Kushner: Aufgabe der Allmacht → zwei Attribute bleiben, Trilemma fällt weg.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Abgelehnt von</span>Wiesel und Sölle: Das Trilemma ist nicht rational zu lösen — Klage und Handeln statt Logik.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Epikur immer als Einstieg der Einleitung: „Die Theodizeefrage geht auf das epikureische Trilemma zurück…" — zeigt sofort Überblick. In Vergleichsaufgaben: Epikur ist die Messlatte — jeder Denker reagiert auf ihn. Zeige, <em>welches Attribut</em> ein Denker aufgibt.</div>
-  </div>
-</div>
-
-<!-- LEIBNIZ -->
-<div class="lz-card" id="lz-leibniz">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--leibniz)">Leibniz<em>Die beste aller möglichen Welten</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">1646–1716</span><span class="lz-tag">Aufklärungsphilosophie</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--leibniz)"><p>Leibniz prägt 1710 den Begriff <strong>„Theodizee"</strong> und liefert die erste systematische Verteidigung Gottes. Seine Antwort: <strong>Gott hat die beste aller möglichen Welten erschaffen</strong> — Leid ist darin logisch notwendig und hat höheren Sinn.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Hauptargumente</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Beste Welt:</strong> Aus unendlich vielen möglichen Welten wählte Gott die mit dem meisten Guten. Eine bessere war logisch nicht möglich.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Vernetzung des Universums:</strong> Alles hängt zusammen. Jede einzelne Verbesserung würde das Gesamtgefüge verschlechtern.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Kontrastfunktion:</strong> Das Böse lässt das Gute erst sichtbar werden — Gesundheit ohne Krankheit verlöre ihren Wert.</div></div>
-      <div class="point"><span class="point-num">4.</span><div class="point-text"><strong>Ursprüngliche Unvollkommenheit:</strong> Das Übel liegt im Wesen des Geschöpfes, nicht in Gott. Erschaffenes ist per Definition unvollkommen.</div></div>
-      <div class="point"><span class="point-num">5.</span><div class="point-text"><strong>Begrenzte Perspektive:</strong> Wir sehen nur einen winzigen Ausschnitt. Was uns als Übel erscheint, dient einem größeren Plan.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Drei Arten von Übel</div>
-    <div class="two-col">
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--leibniz)">Metaphysisches Übel</div><p>Die Unvollkommenheit, die allem Geschaffenen innewohnt. Logisch notwendig.</p></div>
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--leibniz)">Moralisches Übel</div><p>Die Sünde — Folge menschlicher Freiheit. Ohne Freiheit keine Tugend.</p></div>
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--leibniz)">Physisches Übel</div><p>Schmerz, Krankheit, Katastrophen. Oft notwendige Kehrseite des Guten.</p></div>
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--leibniz)">Fazit</div><p>Alle drei sind entweder logisch notwendig, moralisch sinnvoll oder Teil eines größeren Guten.</p></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-ext">Reagiert auf</span>Epikur: Leibniz behauptet, alle 3 Attribute lassen sich gleichzeitig aufrechterhalten — das Trilemma ist auflösbar.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Widerlegt durch</span>Voltaire: Das Erdbeben von Lissabon macht Leibniz' Optimismus lächerlich — 30.000 Tote passen nicht in die „beste Welt".</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Abgelehnt von</span>Jonas und Kushner: Beide geben Leibniz' Prämisse der Allmacht auf. Ohne Allmacht braucht man keine beste Welt zu konstruieren.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Kritisiert von</span>Sölle: Leid rational zu rechtfertigen ist „theologischer Sadismus" — es macht Opfer zu Mitteln eines höheren Zwecks.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Leibniz ist die klassische Verteidigungsposition — hält alle Attribute aufrecht. Stärkstes Argument: Vernetzung des Universums (Punkt 9 im Text). Schwächstes: Kann kein konkretes Leid wie Auschwitz rechtfertigen. Für Analyseaufgaben: <em>„ursprüngliche Unvollkommenheit des Geschöpfes"</em> kennen und erklären (Punkt 20).</div>
-  </div>
-</div>
-
-<!-- VOLTAIRE -->
-<div class="lz-card" id="lz-voltaire">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--voltaire)">Voltaire<em>Der Optimismus ist eine Lüge</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">1694–1778</span><span class="lz-tag">Französische Aufklärung</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--voltaire)"><p>Voltaire ist Satiriker, kein Systemdenker. Seine Antwort auf Leibniz: <strong>Leid ist real, sinnlos und massenweise</strong> — wer angesichts dessen von der „besten Welt" spricht, macht sich mitschuldig an der Verharmlosung von Unrecht.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Auslöser: Lissabon 1755</div>
-    <div class="point" style="margin-bottom:12px"><span class="point-num">!</span><div class="point-text">Am 1. November 1755 — Allerheiligen, mitten in der Messe — zerstört ein Erdbeben Lissabon. Mind. 30.000 Tote. Voltaire: Warum trifft es gerade die Betenden? Die Katastrophe wird zum Beweis der Absurdität des Optimismus.</div></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Candide — Die Satire</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Pangloss = Leibniz-Parodie:</strong> Der Philosoph erklärt jede Katastrophe für notwendig und gut — wird dabei zunehmend lächerlich.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Candide = der naive Gläubige:</strong> Erlebt Leid am eigenen Leib und zweifelt — bis er Pangloss' Optimismus aufgibt.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Zentraler Widerspruch:</strong> Pangloss erklärt das Erdbeben für notwendig — klingt vernünftig und ist dabei menschenverachtend.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Pointe:</strong> „Wenn dies die beste aller möglichen Welten ist, wie müssen dann erst die anderen sein?"</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Voltaires Alternative</div>
-    <div class="two-col">
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--voltaire)">Kein Atheismus</div><p>Voltaire ist Deist — er glaubt an einen Schöpfungsgott, der sich jedoch zurückgezogen hat und nicht eingreift.</p></div>
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--voltaire)">Handeln statt Erklären</div><p>Leid darf nicht gerechtfertigt werden — es muss bekämpft werden. Die Vernunft soll nicht Gott verteidigen, sondern den Menschen helfen.</p></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-vs">Contra</span>Leibniz: Leibniz' Optimismus ist sein Hauptziel. Voltaire zeigt: Theorie scheitert an Realität.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Sölle: Beide lehnen ab, Leid sinnvoll zu reden. Beide fordern Handeln. Sölle radikalisiert das theologisch-politisch.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Wiesel: Beide sehen Leid als Widerlegung naiven Gottesglaubens — aber Wiesel bleibt im Dialog mit Gott.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Voltaire ist kein Systemdenker — sein Beitrag ist die Falsifikation durch Realität. Immer: Kontext Lissabon nennen → Candide kurz erklären → Stoßrichtung: Optimismus ist nicht nur falsch, sondern gefährlich. Voltaire und Leibniz teilen dieselbe Epoche (Aufklärung) — aber ziehen entgegengesetzte Schlüsse aus derselben Vernunft.</div>
-  </div>
-</div>
-
-<!-- WIESEL -->
-<div class="lz-card" id="lz-wiesel">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--wiesel)">Elie Wiesel<em>Klage gegen Gott</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">1928–2016</span><span class="lz-tag">Jüdische Theologie / Literatur</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--wiesel)"><p>Wiesel antwortet auf den Holocaust nicht mit Theologie, sondern mit <strong>existenzieller Klage</strong>. Er gibt Gott nicht auf — aber er unterwirft sich ihm auch nicht mehr. Gott hat in Auschwitz geschwiegen: Das ist kein Beweis gegen Gottes Existenz, sondern ein Verrat. Die Antwort ist <strong>Anklage, nicht Abkehr</strong>.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Schlüsselszene: Rosch-Haschana im Lager</div>
-    <div class="points">
-      <div class="point"><span class="point-num">→</span><div class="point-text">Zehntausende beten gemeinsam am jüdischen Neujahrsfest. Wiesel weigert sich innerlich. Er kann Gott nicht preisen, der seine Kinder verbrennen ließ.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Gott wird zum Angeklagten:</strong> „Ich war der Ankläger. Und Gott war der Angeklagte." — Das Verhältnis wird umgekehrt.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Stärker als Gott:</strong> „Ich fühlte mich stärker als jener Allmächtige." — Nicht Triumph, sondern Erschütterung und Ende der Unterwerfung.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Theologischer Hintergrund: Hiob-Tradition</div>
-    <div class="two-col">
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--wiesel)">Hiob im AT</div><p>Hiob leidet unschuldig und klagt Gott an — aber gibt ihn nicht auf. Die Klage ist im Judentum eine legitime religiöse Haltung.</p></div>
-      <div class="mini-card"><div class="mini-card-label" style="color:var(--wiesel)">Wiesel und Hiob</div><p>Wiesel führt diese Tradition fort — aber ohne Auflösung. Es gibt keine Gottesantwort nach Auschwitz. Die Spannung bleibt: Glaube trotz Anklage.</p></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-vs">Contra</span>Leibniz: Wiesel kann keine „beste Welt" akzeptieren, die Auschwitz einschließt — die radikalste Widerlegung durch konkrete Erfahrung.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Sölle: Beide antworten mit Klage statt Erklärung. Sölle systematisiert das theologisch; Wiesel lebt es als Zeuge.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Jonas: Beide jüdisch, beide durch die Shoah geprägt — Jonas philosophisch, Wiesel existenziell-literarisch.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Anders als</span>Kushner: Kushner sucht Trost. Wiesel sucht Gerechtigkeit und Anklage. Ähnliche Ausgangslage, andere Haltung.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Wiesel ist der emotionalste und literarischste Denker. Schlüssel: Die Umkehrung von Ankläger und Angeklagtem herausarbeiten. Wiesel hält am Gottesglauben fest — anders als Epikur oder Voltaire. Der Begriff <em>Klage als religiöse Haltung</em> muss erklärt werden.</div>
-  </div>
-</div>
-
-<!-- JONAS -->
-<div class="lz-card" id="lz-jonas">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--jonas)">Hans Jonas<em>Der ohnmächtige Gott</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">1903–1993</span><span class="lz-tag">Jüdische Philosophie</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--jonas)"><p>Jonas liefert die <strong>radikalste Revision des Gottesbildes</strong> nach Auschwitz. Er gibt die Allmacht auf — nicht um Gott zu schwächen, sondern um ihn <strong>als gut und verstehbar zu retten</strong>. Ein Gott, der schwieg weil er nicht konnte — ist tragischer, aber vertretbarer als einer, der nicht wollte.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Das Drei-Attribute-Problem</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Absolute Güte + Absolute Macht + Verstehbarkeit</strong> können nicht alle drei gleichzeitig wahr sein angesichts des Bösen. Zwei von drei sind möglich — eines muss weichen.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Jonas' Entscheidung:</strong> Güte und Verstehbarkeit sind unverzichtbar für den jüdischen Gottesbegriff. Also fällt die <em>Allmacht</em>.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Begründung:</strong> Ein völlig unverständlicher Gott (<em>deus absconditus</em>) wäre nach jüdischer Norm nicht akzeptabel. Die Tora lehrt, dass wir Gott teilweise verstehen können.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Die Kenosis — Gottes Selbstentäußerung</div>
-    <div class="points">
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Bei der Schöpfung</strong> hat Gott sich vollständig in die Welt hineingegeben — er hat seine Macht abgegeben, um die Welt entstehen zu lassen.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Konsequenz:</strong> Gott kann nicht mehr in den physischen Verlauf der Welt eingreifen. Er schwieg in Auschwitz <em>nicht weil er nicht wollte, sondern weil er nicht konnte</em>.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Gottes restlicher Einfluss:</strong> Auf Psyche, Seele, Gewissen — durch Gebote, durch Menschen, die gegen Unrecht kämpfen.</div></div>
-      <div class="point"><span class="point-num">→</span><div class="point-text"><strong>Menschliche Verantwortung:</strong> Da Gott ohnmächtig ist, liegt die Verantwortung für die Welt beim Menschen. Ethik wird zentral.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-ext">Löst</span>Epikurs Trilemma durch Aufgabe der Allmacht: Güte + Verstehbarkeit bleiben — Trilemma aufgelöst.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Contra</span>Leibniz: Es ist unmöglich, Gottes Allmacht nach Auschwitz aufrechtzuerhalten. Das klassische Gottsbild muss revidiert werden.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Kushner: Beide geben Allmacht auf, beide sehen Gott als leidend — aber Jonas philosophisch, Kushner seelsorgerlich.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Wiesel: Beide durch die Shoah geprägt, beide jüdisch — zwei Seiten derselben Erfahrung.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Jonas ist philosophisch anspruchsvollsten — wer ihn versteht, hat klare Vorteile. Kernbegriffe: <em>Kenosis, ohnmächtiger Gott, drei Attribute</em>. Jonas gibt nicht Gott auf, sondern ein Attribut Gottes. Für Stellungnahmen: Jonas' Gott ist glaubwürdiger nach Auschwitz — aber wirft neue Fragen auf: Wozu beten zu einem ohnmächtigen Gott?</div>
-  </div>
-</div>
-
-<!-- KUSHNER -->
-<div class="lz-card" id="lz-kushner">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--kushner)">Harold Kushner<em>Gott begleitet uns</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">*1935</span><span class="lz-tag">Jüdische Seelsorge</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--kushner)"><p>Kushner antwortet auf Leid nicht als Philosoph, sondern als <strong>Vater und Rabbiner</strong>. Sein Sohn Aaron starb an Progerie — das ist der persönliche Ausgangspunkt. Seine Antwort: <strong>Gott ist nicht die Ursache des Bösen, weil er nicht allmächtig ist</strong> — aber er ist da, leidet mit und gibt Kraft.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Hauptargumente</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Gott hat Grenzen:</strong> Seine Grenzen liegen in den Naturgesetzen und der menschlichen Freiheit. Diese hat er selbst erschaffen — und bricht sie nicht.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Gott ist nicht Ursache des Bösen:</strong> Krankheit, Unfall, Naturkatastrophe — das kommt nicht von Gott. Gott macht keine Menschen krank, damit sie demütig werden.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Was tut Gott?</strong> Er gibt Menschen die Kraft, mit Leid umzugehen. Stärke im Unglück, Mut in der Krise — das ist Gottes Hilfe. Nicht Wunder, sondern innere Ressourcen.</div></div>
-      <div class="point"><span class="point-num">4.</span><div class="point-text"><strong>Gottes Mitgefühl durch uns:</strong> Wenn Menschen angesichts von Leid helfen und sich einsetzen — darin zeigt sich Gott. Gottes Mitgefühl wird <em>durch uns</em> offenbar.</div></div>
-      <div class="point"><span class="point-num">5.</span><div class="point-text"><strong>Existenzbeweis durch Empörung:</strong> Unsere moralische Empörung über Ungerechtigkeit ist selbst ein Zeichen, dass es Gott gibt — denn woher käme sie sonst?</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Jonas: Beide geben Gottes Allmacht auf. Jonas: philosophische Kenosis. Kushner: praktische Grenzen durch Naturgesetze.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Anders als</span>Wiesel: Wiesel klagt und fordert Gerechtigkeit. Kushner sucht Trost und Versöhnung.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Sölle: Gottes Wirken durch Menschen — beide sehen das als zentral. Sölle politischer, Kushner seelsorgerlicher.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Contra</span>Leibniz: Kushner lehnt explizit ab, dass Gott Leid zulässt, damit ein höherer Plan erfüllt wird.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Kushner ist der zugänglichste Denker — seine Stärke ist Nachvollziehbarkeit. Für Analyseaufgaben: Was tut Gott nicht? Was kann Gott nicht? Was tut Gott stattdessen? Für Vergleich mit Jonas: Beide lösen das Trilemma durch Aufgabe der Allmacht — aber mit unterschiedlicher Begründung und Konsequenz.</div>
-  </div>
-</div>
-
-<!-- SÖLLE -->
-<div class="lz-card" id="lz-solle">
-  <div class="lz-card-header">
-    <div><div class="lz-name" style="color:var(--solle)">Dorothee Sölle<em>Gottes Schmerz — unser Kampf</em></div></div>
-    <div class="lz-meta"><span class="lz-dates">1929–2003</span><span class="lz-tag">Politische Theologie</span></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kernposition</div>
-    <div class="core-box" style="border-color:var(--solle)"><p>Sölle verweigert die Theodizeefrage in ihrer klassischen Form. Die Frage „Wie konnte Gott das zulassen?" ist die <strong>falsche Frage</strong>. Die richtige: <em>„Wie werden unsere Schmerzen zu Gottes Schmerz?"</em> Leid ist nicht zu erklären, sondern zu klagen und zu bekämpfen.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Das neue Gottesbild</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Ablehnung des Patriarchalismus:</strong> Gott als Machthaber, Allmächtiger — das ist ein Gottesbild, das angeklagt werden muss.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Gott als Mutter:</strong> Tröstet, hält aus, gibt Kraft zum Aufstehen. Aber zaubert Schmerz nicht weg — er ist <em>mit</em> uns im Schmerz.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Praesentia Dei:</strong> Gott ist nicht Beobachter. Er nimmt teil an unserem Leid, leidet mit und an der ungerechten Welt.</div></div>
-      <div class="point"><span class="point-num">4.</span><div class="point-text"><strong>Gottes Traurigkeit → Handeln:</strong> Wer Gottes Traurigkeit wahrnimmt, wird selbst traurig — und aus Trauer wird politisches Engagement.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">3-Phasen-Modell</div>
-    <div class="points">
-      <div class="point"><span class="point-num">1.</span><div class="point-text"><strong>Stummheit</strong> — Der erste Schock des Leids. Sprachlosigkeit als erste Reaktion.</div></div>
-      <div class="point"><span class="point-num">2.</span><div class="point-text"><strong>Klage</strong> — Schreien zu Gott. Wiesel-ähnlich: Gott anklagen, nicht schweigen. Das ist religiöse Praxis, kein Versagen.</div></div>
-      <div class="point"><span class="point-num">3.</span><div class="point-text"><strong>Politisches Handeln</strong> — Aus Gottes Trauer wird Widerstand. Wir werden Gottes Hände in der Welt. Leid bekämpfen statt erklären.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Kontext: El Salvador & Befreiungstheologie</div>
-    <div class="mini-card" style="margin-bottom:12px"><div class="mini-card-label" style="color:var(--solle)">Politischer Hintergrund</div><p>Sölle schreibt vor dem Hintergrund der Militärdiktatur in El Salvador (1980er). Für sie ist Theodizee keine akademische Frage — sie ist politisch. Wer schweigt angesichts von Unrecht, macht sich mitschuldig. Die Frage nach dem Leid ist nicht von sozialer Gerechtigkeit trennbar.</p></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Verbindungen</div>
-    <div class="connections">
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Voltaire: Beide lehnen Leid-Rechtfertigungen ab, beide fordern Handeln. Sölle bleibt theologisch — Gott ist Grund des Handelns.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Wiesel: Beide antworten mit Klage statt Erklärung. Sölle macht daraus eine systematische Theologie mit politischem Auftrag.</div>
-      <div class="conn-item"><span class="conn-type conn-sim">Ähnlich wie</span>Kushner: Gottes Wirken durch Menschen — beide sehen das als zentral. Sölle politischer, Kushner individuell.</div>
-      <div class="conn-item"><span class="conn-type conn-vs">Contra</span>Leibniz: „Theologischer Sadismus" — Leid in einen höheren Plan einzuordnen ist Kollaboration mit dem Unrecht.</div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Klausur-Strategie</div>
-    <div class="klausur-box"><strong>Für 11–12 Punkte</strong>Sölle ist die ungewöhnlichste Position — politisch, feministisch, mystisch. Schlüsselbegriffe: <em>Praesentia Dei, Gottes Schmerz, theologischer Sadismus, Befreiungstheologie</em>. Für Textanalyse (Aufgabe 2b): Begriffspaare „Gottes Schmerz / unser Schmerz" als theologische Aussagen erklären. Kernaussage: Leid ist nicht zu erklären — es ist zu teilen und zu bekämpfen.</div>
-  </div>
-</div>
-
-<!-- COMPARE -->
-<div class="lz-card" id="lz-compare">
-  <div class="lz-card-header">
-    <div><div class="lz-name">Vergleich<em>Alle 7 Positionen im Überblick</em></div></div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Übersichtsmatrix</div>
-    <div class="matrix">
-      <table>
-        <thead><tr><th>Denker</th><th>Gottsbild</th><th>Antwort auf Leid</th><th>Attribut das fällt</th><th>Schlüsselbegriff</th></tr></thead>
-        <tbody>
-          <tr><td style="color:var(--epikur)">Epikur</td><td>kein Gott möglich (mit allen 3)</td><td>Problem benennen, nicht lösen</td><td>Alle 3 gleichzeitig</td><td>Trilemma</td></tr>
-          <tr><td style="color:var(--leibniz)">Leibniz</td><td>Allmächtig, allgütig, allwissend</td><td>Beste mögliche Welt</td><td>Keines (alle behalten)</td><td>Optimismus</td></tr>
-          <tr><td style="color:var(--voltaire)">Voltaire</td><td>Deistisch / skeptisch</td><td>Optimismus ist Lüge → handeln</td><td>Allgüte (de facto)</td><td>Candide / Lissabon</td></tr>
-          <tr><td style="color:var(--wiesel)">Wiesel</td><td>Schweigend / angeklagt</td><td>Klage gegen Gott (Hiob)</td><td>Keine klare Antwort</td><td>Schweigen Gottes</td></tr>
-          <tr><td style="color:var(--jonas)">Jonas</td><td>Gut, verstehbar, ohnmächtig</td><td>Gottsbild revidieren</td><td>Allmacht (Kenosis)</td><td>Entäußerung</td></tr>
-          <tr><td style="color:var(--kushner)">Kushner</td><td>Nicht allmächtig, mitfühlend</td><td>Trost durch Gottes Begleitung</td><td>Allmacht (Naturgesetze)</td><td>Gottes Kraft in uns</td></tr>
-          <tr><td style="color:var(--solle)">Sölle</td><td>Mitleidend, mütterlich, politisch</td><td>Klage → politisches Handeln</td><td>Omnipotenz-Bild</td><td>Praesentia Dei</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Historische Entwicklungslinie</div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-dot" style="background:var(--epikur)"></div><div class="tl-year">341 v. Chr.</div><div class="tl-content"><span class="tl-name" style="color:var(--epikur)">Epikur</span> — Das Trilemma als Grundfrage, ungelöst für 2000 Jahre.</div></div>
-      <div class="tl-item"><div class="tl-dot" style="background:var(--leibniz)"></div><div class="tl-year">1710</div><div class="tl-content"><span class="tl-name" style="color:var(--leibniz)">Leibniz</span> — Prägt „Theodizee", erste systematische Verteidigung Gottes.</div></div>
-      <div class="tl-item"><div class="tl-dot" style="background:var(--voltaire)"></div><div class="tl-year">1755 / 1759</div><div class="tl-content"><span class="tl-name" style="color:var(--voltaire)">Voltaire</span> — Lissabon-Erdbeben + Candide als literarische Widerlegung des Optimismus.</div></div>
-      <div class="tl-item"><div class="tl-dot" style="background:var(--wiesel)"></div><div class="tl-year">1958</div><div class="tl-content"><span class="tl-name" style="color:var(--wiesel)">Wiesel</span> — <em>Nacht</em>: Das Schweigen Gottes in Auschwitz als existenzielle Theodizee-Erfahrung.</div></div>
-      <div class="tl-item"><div class="tl-dot" style="background:var(--solle)"></div><div class="tl-year">1973</div><div class="tl-content"><span class="tl-name" style="color:var(--solle)">Sölle</span> — <em>Leiden</em>: Politische Theologie des Leidens als Klage und Kampf.</div></div>
-      <div class="tl-item"><div class="tl-dot" style="background:var(--kushner)"></div><div class="tl-year">1981</div><div class="tl-content"><span class="tl-name" style="color:var(--kushner)">Kushner</span> — Seelsorgerliche Antwort auf persönliches Leid.</div></div>
-      <div class="tl-item"><div class="tl-dot" style="background:var(--jonas)"></div><div class="tl-year">1984</div><div class="tl-content"><span class="tl-name" style="color:var(--jonas)">Jonas</span> — <em>Der Gottesbegriff nach Auschwitz</em>: Der ohnmächtige Gott.</div></div>
-    </div>
-  </div>
-  <div class="lz-section">
-    <div class="lz-label">Typische Klausur-Paarungen</div>
-    <div class="pair-connections">
-      <div class="pair">
-        <div class="pair-header"><span style="color:var(--leibniz)">Leibniz</span><span class="pair-arrow">↔</span><span style="color:var(--voltaire)">Voltaire</span><span class="pair-tag" style="background:rgba(212,126,126,.15);color:var(--voltaire)">Contra</span></div>
-        <div class="pair-body">Gleiche Epoche, entgegengesetzte Schlüsse. Leibniz: Vernunft beweist Gottes Güte. Voltaire: Realität widerlegt die Vernunft. Verbindend: Lissabon als konkreter Prüfstein des theoretischen Streits.</div>
-      </div>
-      <div class="pair">
-        <div class="pair-header"><span style="color:var(--jonas)">Jonas</span><span class="pair-arrow">↔</span><span style="color:var(--kushner)">Kushner</span><span class="pair-tag" style="background:rgba(126,212,160,.15);color:var(--jonas)">Ähnlich</span></div>
-        <div class="pair-body">Beide geben Allmacht auf. Beide sehen Gott als mitleidend. Unterschied: Jonas philosophisch-abstrakt (Kenosis), Kushner pastoral-konkret (Naturgesetze). Beide stärken menschliche Verantwortung.</div>
-      </div>
-      <div class="pair">
-        <div class="pair-header"><span style="color:var(--wiesel)">Wiesel</span><span class="pair-arrow">↔</span><span style="color:var(--solle)">Sölle</span><span class="pair-tag" style="background:rgba(212,126,184,.15);color:var(--solle)">Ähnlich</span></div>
-        <div class="pair-body">Beide antworten mit Klage statt Erklärung. Unterschied: Wiesel bleibt im existenziellen Erleben eines Zeugen. Sölle entwickelt daraus eine systematische Theologie mit politischem Auftrag.</div>
-      </div>
-      <div class="pair">
-        <div class="pair-header"><span style="color:var(--leibniz)">Leibniz</span><span class="pair-arrow">↔</span><span style="color:var(--jonas)">Jonas</span><span class="pair-tag" style="background:rgba(126,184,212,.15);color:var(--leibniz)">Fundamental</span></div>
-        <div class="pair-body">Der fundamentalste Gegensatz: Leibniz behält alle drei Attribute und rechtfertigt Leid. Jonas gibt Allmacht auf und macht Leid erklärlich durch Gottes Selbstbeschränkung. Leibniz schreibt vor Auschwitz — Jonas danach. Das ist der entscheidende Unterschied.</div>
-      </div>
-      <div class="pair">
-        <div class="pair-header"><span style="color:var(--voltaire)">Voltaire</span><span class="pair-arrow">↔</span><span style="color:var(--solle)">Sölle</span><span class="pair-tag" style="background:rgba(212,126,184,.15);color:var(--solle)">Verbindend</span></div>
-        <div class="pair-body">Beide fordern Handeln statt Erklären, beide lehnen Optimismus ab. Aber: Voltaire handelt aus Vernunft ohne Gott. Sölle handelt aus theologischer Überzeugung — weil Gott es will.</div>
-      </div>
-      <div class="pair" style="border-color:rgba(212,126,184,.3);background:rgba(212,126,184,.04)">
-        <div class="pair-header"><span style="color:var(--kushner)">Kushner</span><span class="pair-arrow">↔</span><span style="color:var(--solle)">Sölle</span><span class="pair-tag" style="background:rgba(212,126,184,.2);color:var(--solle)">Textvergleich</span></div>
-        <div class="pair-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-            <div style="padding:10px 12px;background:rgba(212,160,126,.1);border-radius:5px;border-left:2px solid var(--kushner)">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--kushner);margin-bottom:5px">Kushner</div>
-              <div style="font-size:12px;line-height:1.6;color:#e8e4dc">Gott hat <em>feste Grenzen</em> durch Naturgesetze und Freiheit — rational erklärbar. Funktion: Gott stärkt den <strong>Einzelnen</strong> im persönlichen Leid. Ton: tröstlich, seelsorgerlich. Kontext: Sohn stirbt an Progerie.</div>
-            </div>
-            <div style="padding:10px 12px;background:rgba(212,126,184,.1);border-radius:5px;border-left:2px solid var(--solle)">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--solle);margin-bottom:5px">Sölle</div>
-              <div style="font-size:12px;line-height:1.6;color:#e8e4dc">Gott <em>leidet mit</em> — mystisch-emotional, nicht rational begrenzt. Funktion: Gottes Trauer verpflichtet zur <strong>politischen Reaktion</strong>. Ton: prophetisch, kämpferisch. Kontext: Militärdiktatur El Salvador.</div>
-            </div>
-          </div>
-          <div style="font-size:12.5px;line-height:1.7;color:rgba(232,228,220,.8)">
-            <strong style="color:#e8e4dc;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Gottsbild:</strong> Beide lehnen den Eingreifer-Gott ab. Kushner erklärt Gottes Grenzen rational (Naturgesetze). Sölle beschreibt Gottes Anwesenheit mystisch (<em>Praesentia Dei</em>, Gott als Mutter).<br><br>
-            <strong style="color:#e8e4dc;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Wozu ist Gott gut?</strong> Kushner: Gott gibt Kraft, mit Leid <em>fertigzuwerden</em> — praktische Hilfe im Alltag. Sölle: Gottes Trauer <em>motiviert zum Widerstand</em> — wer Gottes Schmerz wahrnimmt, wird politisch aktiv.<br><br>
-            <strong style="color:#e8e4dc;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Wirken durch Menschen:</strong> Gemeinsamkeit — beide sehen Gottes Wirken nicht in Wundern, sondern im Menschen selbst. Kushner: Gottes Mitgefühl zeigt sich, wenn wir anderen helfen. Sölle: Gottes Trauer wird zur unseren und zwingt uns zu handeln.<br><br>
-            <strong style="color:#e8e4dc;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Die Frage selbst:</strong> Kushner beantwortet die alte Frage neu — „Wozu ist Gott noch gut?" Sölle <em>ersetzt die Frage</em>: nicht mehr „Wie konnte Gott das zulassen?" sondern „Wie werden unsere Schmerzen zu Gottes Schmerz?"<br><br>
-            <strong style="color:#e8e4dc;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Klausur-Kern:</strong> Gleiche Prämisse (Gott leidet mit, ist nicht allmächtig) — völlig andere Konsequenz. Kushner endet beim <em>Individuum</em>: Gott hilft dir, dein Leid zu tragen. Sölle endet bei der <em>Gesellschaft</em>: Gottes Schmerz verpflichtet dich, gegen das Leid anderer zu kämpfen.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 ```
 
-  </div><!-- /lz-main -->
+  </div>
+
+  <!-- TEIL 2: AUFSTIEG NSDAP -->
+
+  <div class="section">
+    <div class="section-header ns">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Aufstieg des Nationalsozialismus</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Von der Splitterpartei zur Diktatur · 1919–1934</div>
+      </div>
+    </div>
+    <div class="section-body ns-body">
+
+```
+  <div class="subsection">
+    <h3>NS-Ideologie – Kernelemente</h3>
+    <p>Um zu verstehen, warum die NSDAP Erfolg hatte, muss man ihre Ideologie kennen:</p>
+    <div class="keyterms">
+      <span class="kt">Antisemitismus</span>
+      <span class="kt">Rassismus / „Volksgemeinschaft"</span>
+      <span class="kt">Lebensraum im Osten</span>
+      <span class="kt">Führerprinzip</span>
+      <span class="kt">Nationalismus / Revisionismus</span>
+      <span class="kt">Antimarxismus</span>
+      <span class="kt">Antidemokratismus</span>
+    </div>
+    <p>Hitler verband <strong>radikalen Antisemitismus</strong> mit <strong>nationalem Sendungsbewusstsein</strong>: Die Juden seien schuld an Kriegsniederlage, Inflation und Kommunismus. Das war eine einfache Erklärung für komplexe Probleme – und deshalb wirksam in der Krise.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="subsection">
+    <h3>Chronologie des Aufstiegs</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">1919–1923 · Frühphase</div>
+        <div class="tl-text">Hitler tritt der DAP bei (1919), benennt sie in <strong>NSDAP</strong> um. Aufbau der SA. Ideologie: Mein Kampf-Grundgedanken. <strong>Hitlerputsch November 1923</strong> scheitert – Hitler wird zu 5 Jahren verurteilt, kommt nach 9 Monaten frei.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1924–1929 · Stagnationsphase</div>
+        <div class="tl-text">Wirtschaftliche Stabilisierung schadet der NSDAP. Wahlergebnisse bei 2–3 %. Hitler nutzt die Zeit: Reorganisation der Partei, Aufbau von Parteistrukturen in ganz Deutschland, <strong>„Legalitätsstrategie"</strong> (keine Putsches mehr, Macht durch Wahlen).</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1929–1932 · Durchbruch durch die Krise</div>
+        <div class="tl-text">Weltwirtschaftskrise als Katalysator: <strong>September 1930: 18,3 %</strong> – NSDAP wird zweitstärkste Kraft. <strong>Juli 1932: 37,4 %</strong> – stärkste Partei. Massenmobilisierung, Wahlkampf mit modernen Mitteln (Flugzeug, Lautsprecher, Plakate, Propaganda durch Goebbels).</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">30. Januar 1933 · „Machtergreifung"</div>
+        <div class="tl-text">Reichspräsident Hindenburg ernennt Hitler zum Reichskanzler. Konservative Eliten glauben, ihn „einrahmen" zu können (<strong>von Papen: „den Hitler kann man einhegen"</strong>). Fatale Fehleinschätzung.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1933 · Machtkonsolidierung</div>
+        <div class="tl-text"><strong>Reichstagsbrand 27. Feb.</strong> → Notverordnung zum Schutz von Volk und Staat (Grundrechte außer Kraft). <strong>Ermächtigungsgesetz 23. März</strong>: Regierung kann ohne Reichstag Gesetze erlassen. <strong>Gleichschaltung</strong>: Länder, Parteien, Gewerkschaften werden aufgelöst/gleichgeschaltet. KPD und SPD verboten.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1934 · Vollendung der Diktatur</div>
+        <div class="tl-text"><strong>„Röhm-Putsch" / Nacht der langen Messer (30. Juni 1934)</strong>: Hitler lässt SA-Führung ermorden – Ausschaltung eines internen Rivalen, Sicherung der Loyalität der Reichswehr. <strong>Tod Hindenburgs (August 1934)</strong>: Hitler vereint Kanzler- und Präsidentenamt → <strong>„Führer und Reichskanzler"</strong>. Wehrmacht schwört auf Hitler persönlich.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- WAHLERGEBNISSE – Tabelle passt hier perfekt -->
+  <div class="subsection">
+    <h3>NSDAP-Wahlergebnisse im Überblick</h3>
+    <p class="table-caption">Reichstagswahlen – NSDAP-Stimmanteile direkt verknüpft mit der Wirtschaftslage</p>
+    <table class="data-table red-table">
+      <thead>
+        <tr><th>Wahl</th><th>Ergebnis</th><th style="width:140px;">Anteil</th><th>Wirtschaftlicher Kontext</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="yr">Mai 1924</td>
+          <td class="pct">6,5 %</td>
+          <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:17%"></div></div></td>
+          <td class="note">Nach Hyperinflation – erste Kandidatur</td>
+        </tr>
+        <tr>
+          <td class="yr">Dez. 1924</td>
+          <td class="pct">3,0 %</td>
+          <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:8%"></div></div></td>
+          <td class="note">Stabilisierung → NSDAP verliert</td>
+        </tr>
+        <tr>
+          <td class="yr">Mai 1928</td>
+          <td class="pct">2,6 %</td>
+          <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:7%"></div></div></td>
+          <td class="note">Goldene Zwanziger – absolutes Tief</td>
+        </tr>
+        <tr>
+          <td class="yr">Sept. 1930</td>
+          <td class="pct">18,3 %</td>
+          <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:49%"></div></div></td>
+          <td class="note">Weltwirtschaftskrise → Durchbruch!</td>
+        </tr>
+        <tr>
+          <td class="yr">Juli 1932</td>
+          <td class="pct">37,4 %</td>
+          <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:100%"></div></div></td>
+          <td class="note">6 Mio. Arbeitslose – stärkste Partei</td>
+        </tr>
+        <tr>
+          <td class="yr">Nov. 1932</td>
+          <td class="pct">33,1 %</td>
+          <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:89%"></div></div></td>
+          <td class="note">Leichter Rückgang – dennoch Kanzler Jan. 1933</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight red">
+      <strong>Schlüsselerkenntnis:</strong> 2,6 % (1928) → 37,4 % (1932) in nur 4 Jahren. Ohne die Weltwirtschaftskrise wäre Hitler nie Kanzler geworden.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="subsection">
+    <h3>Gründe für den Aufstieg der NSDAP</h3>
+    <p><strong>1. Wirtschaftliche Krisen</strong> – Hyperinflation und vor allem die Weltwirtschaftskrise 1929 erzeugten Massenarmut und Verzweiflung. Wer nichts mehr zu verlieren hatte, wählte radikal.</p>
+    <p><strong>2. Versagen der demokratischen Parteien</strong> – Die Weimarer Koalitionen konnten die Krise nicht lösen. Brüning regierte per Notverordnung, der Reichstag tagte kaum noch. Das Vertrauen in die Demokratie schwand.</p>
+    <p><strong>3. Propaganda &amp; Charisma Hitlers</strong> – Goebbels' Propaganda-Maschinerie war hochmodern. Hitler trat als „Retter" auf, der einfache Antworten auf komplexe Probleme gab. Emotionale Massenveranstaltungen (Nürnberger Parteitage).</p>
+    <p><strong>4. Fehleinschätzung der Eliten</strong> – Reichswehr, Großindustrielle, Adel und Konservative unterschätzten Hitler und unterstützten ihn als Werkzeug gegen die Linke. Von Papen arrangierte die Ernennung Hitlers zum Kanzler.</p>
+    <p><strong>5. Schwäche des Staates</strong> – Polizei und Justiz gingen kaum gegen NS-Terror vor. SA-Schlägertrupps operierten fast ungestört. Der Staat zeigte gegenüber der Rechten Milde, gegenüber der Linken Härte.</p>
+    <div class="highlight red">
+      <strong>Wichtig:</strong> Der Aufstieg der NSDAP war kein „Betriebsunfall" – er war das Ergebnis des Zusammenwirkens von Krisenbelastung, strukturellen Demokratiemängeln, Propaganda und dem Versagen der demokratischen Kräfte. Hitler wurde nicht <em>gewählt</em>, er wurde ernannt – aber mit massiver Volksunterstützung.
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- TEIL 3: ZUSAMMENHÄNGE -->
+
+  <div class="section">
+    <div class="section-header zusammenhang">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Zusammenhänge &amp; Kausalitäten</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Wie hängen Weimarer Republik und NS-Aufstieg zusammen?</div>
+      </div>
+    </div>
+    <div class="section-body zusammen-body">
+
+```
+  <div class="subsection">
+    <h3>Die Kausalkette: Vom Kaiserreich zur Diktatur</h3>
+    <div class="chain">
+      <span class="chain-item">WK I Niederlage 1918</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-item">Versailler Vertrag</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-item">Wirtschaftskrise + Demütigung</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-item">Instabile Demokratie</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-item">Radikalisierung</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-item">NS-Aufstieg</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-item">Diktatur 1933/34</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="subsection">
+    <h3>Drei zentrale Zusammenhänge für die Klausur</h3>
+    <p><strong>① Versailles als Dauerhypothek:</strong> Der Versailler Vertrag (1919) schwächte die Republik wirtschaftlich (Reparationen), politisch (Kriegsschuldlüge) und psychologisch (nationale Demütigung). Die NSDAP nutzte den Revisions-Wunsch als Kernversprechen: „Deutschland wieder groß machen."</p>
+    <p><strong>② Wirtschaftskrise als Katalysator:</strong> Ohne die Weltwirtschaftskrise 1929 wäre Hitler nie Kanzler geworden. 1928 lag die NSDAP bei 2,6 %. Die Massenarbeitslosigkeit trieb Millionen in die Arme der Extremen. Wirtschaftliche Not und politischer Radikalismus sind direkt verknüpft.</p>
+    <p><strong>③ Institutionelles Versagen als Ermöglichungsfaktor:</strong> Die Fehlkonstruktionen der Weimarer Verfassung (Art. 48, Verhältniswahlrecht) wurden von Hitler genutzt. Das Ermächtigungsgesetz war formal legal. Die Demokratie wurde mit demokratischen Mitteln zerstört.</p>
+    <div class="highlight green">
+      <strong>Übergreifende These:</strong> Die Weimarer Republik scheiterte nicht, weil Demokratie als System versagt hätte, sondern weil sie in einer Gesellschaft eingeführt wurde, die demokratische Werte noch nicht verinnerlicht hatte, und unter katastrophalen wirtschaftlichen Bedingungen kämpfen musste.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="subsection">
+    <h3>Historikerstreit: War das alles zwangsläufig?</h3>
+    <p><strong>Intentionalisten</strong> betonen Hitlers langfristigen Plan und ideologische Absicht als entscheidend.</p>
+    <p><strong>Strukturalisten / Funktionalisten</strong> betonen, dass die Strukturen der Weimarer Republik und der Weltkrieg die eigentlichen Ursachen waren – Hitler war auch Ergebnis von Umständen.</p>
+    <p>Für die Klausur wichtig: <strong>Multikausale Erklärung</strong> – kein Einzelfaktor reicht aus. Die Kombination aus Strukturschwäche, Krise, Propaganda und Elitenversagen erklärt den NS-Aufstieg.</p>
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- KLAUSUR-TIPPS -->
+
+  <div class="section">
+    <div class="section-header" style="background:rgba(201,168,76,0.05);">
+      <div class="section-num" style="color:var(--gold);opacity:0.35;">04</div>
+      <div>
+        <div class="section-title" style="color:var(--gold-light);">Klausur-Strategie · 11–12 Punkte</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Was Korrektoren sehen wollen</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <h3 style="color:var(--gold);border-color:rgba(201,168,76,0.2);">Operatoren &amp; Anforderungen</h3>
+        <ul>
+          <li><strong>Analysieren / Erklären:</strong> Ursache-Wirkungs-Ketten darstellen, nicht nur aufzählen. „X führte zu Y, weil…"</li>
+          <li><strong>Beurteilen / Bewerten:</strong> Eigene begründete These + Gegenargument + Abwägung. Kein Absolutismus.</li>
+          <li><strong>Beschreiben:</strong> Fachbegriffe benutzen, Belege nennen (Jahreszahlen, Gesetze, Namen).</li>
+        </ul>
+      </div>
+      <div class="subsection">
+        <h3 style="color:var(--gold);border-color:rgba(201,168,76,0.2);">Must-Have Fakten für die Klausur</h3>
+        <div class="keyterms">
+          <span class="kt">9. Nov. 1918 – Republik ausgerufen</span>
+          <span class="kt">Versailler Vertrag 1919 / §231</span>
+          <span class="kt">Hyperinflation 1923</span>
+          <span class="kt">Dawes-Plan 1924</span>
+          <span class="kt">Hitlerputsch 1923</span>
+          <span class="kt">Weltwirtschaftskrise 1929</span>
+          <span class="kt">NSDAP 37,4 % – Juli 1932</span>
+          <span class="kt">30. Jan. 1933 – Hitler Kanzler</span>
+          <span class="kt">Reichstagsbrand 27. Feb. 1933</span>
+          <span class="kt">Ermächtigungsgesetz 23. März 1933</span>
+          <span class="kt">Nacht der langen Messer – 30. Juni 1934</span>
+          <span class="kt">Hindenburg Tod Aug. 1934 → Führer</span>
+          <span class="kt">Artikel 48 – Notstandsparagraph</span>
+          <span class="kt">Gleichschaltung 1933</span>
+        </div>
+      </div>
+      <div class="merke">
+        <div class="merke-label">⚑ Goldene Regel</div>
+        <p>Nie isoliert aufzählen – immer <strong>verknüpfen</strong>: Warum? Folge? Zusammenhang mit dem anderen Thema? Ein Satz mit Kausalität zählt mehr als drei Sätze reine Fakten.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Lernzettel erstellt zur Klausurvorbereitung · Weimarer Republik &amp; NS-Aufstieg 1918–1934
+  </footer>
+
 </div>
 
 <script>
-// APP TABS
-function switchView(v) {
-  document.querySelectorAll('.app-view').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.app-tab').forEach(el=>el.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
-  event.currentTarget.classList.add('active');
-}
+  const TOPICS = [
+    { id: 'gruendung',   label: 'Entstehung & Gründungskrise 1918/19' },
+    { id: 'versailles',  label: 'Versailler Vertrag & seine 4 Folgen' },
+    { id: 'verfassung',  label: 'Weimarer Verfassung & Schwächen (Art. 48)' },
+    { id: 'destab',      label: 'Alle 6 destabilisierenden Faktoren' },
+    { id: 'stab',        label: 'Alle 4 stabilisierenden Faktoren' },
+    { id: 'inflation',   label: 'Hyperinflation 1923 erklären können' },
+    { id: 'wk29',        label: 'Weltwirtschaftskrise 1929 & Folgen' },
+    { id: 'dawes',       label: 'Dawes-Plan & Goldene Zwanziger' },
+    { id: 'ideologie',   label: 'NS-Ideologie – alle 7 Kernelemente' },
+    { id: 'phasen',      label: 'Aufstieg in 4 Phasen (1919–1934)' },
+    { id: 'wahlen',      label: 'NSDAP-Wahlergebnisse & Wirtschaftsbezug' },
+    { id: 'machtergrfg', label: '30. Jan. 1933 – Machtergreifung & Eliten' },
+    { id: 'ermacht',     label: 'Ermächtigungsgesetz & Gleichschaltung' },
+    { id: 'roehm',       label: 'Nacht der langen Messer & Führerstaat 1934' },
+    { id: 'gruende5',    label: 'Die 5 Aufstiegsgründe der NSDAP' },
+    { id: 'kausalkette', label: 'Kausalkette Kaiserreich → Diktatur' },
+    { id: 'zusammen3',   label: '3 zentrale Zusammenhänge für die Klausur' },
+    { id: 'historiker',  label: 'Historikerstreit: Intent. vs. Strukt.' },
+    { id: 'operatoren',  label: 'Operatoren kennen (analysieren, bewerten…)' },
+    { id: 'mustfakten',  label: 'Alle 14 Must-Have-Fakten auswendig' },
+  ];
 
-// LERNPLAN
-const state = JSON.parse(localStorage.getItem('theo-plan')||'{}');
-const chipMap={1:['chip-epikur'],2:['chip-leibniz'],3:['chip-voltaire','chip-wiesel'],4:['chip-jonas','chip-kushner'],5:['chip-solle'],6:[]};
+  const KEY = 'lernzettel_v2';
 
-function updateProgress(){
-  const done=[1,2,3,4,5,6].filter(d=>state[d]).length;
-  const pct=Math.round((done/6)*100);
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('progress-label').textContent=done+' von 6 Tagen abgeschlossen';
-  document.getElementById('progress-pct').textContent=pct+'%';
-}
-function markDone(e,day){
-  e.stopPropagation();
-  state[day]=!state[day];
-  localStorage.setItem('theo-plan',JSON.stringify(state));
-  applyState(day);updateProgress();
-}
-function applyState(day){
-  const card=document.getElementById('day-'+day);
-  const btn=document.getElementById('btn-'+day);
-  const isDone=state[day];
-  if(isDone){card.classList.add('is-done');card.classList.remove('is-today');btn.classList.add('done');btn.textContent='✓ Fertig';}
-  else{card.classList.remove('is-done');btn.classList.remove('done');btn.textContent='Erledigt';}
-  (chipMap[day]||[]).forEach(id=>{const c=document.getElementById(id);if(c)c.classList.toggle('done',isDone);});
-}
-function toggleDay(day){
-  const body=document.getElementById('body-'+day);
-  const chev=document.getElementById('chev-'+day);
-  const isOpen=body.classList.contains('open');
-  body.classList.toggle('open',!isOpen);
-  if(chev)chev.style.transform=isOpen?'':'rotate(180deg)';
-}
-[1,2,3,4,5,6].forEach(d=>applyState(d));
-updateProgress();
-// auto-open today
-const todayBody=document.getElementById('body-3');
-const todayChev=document.getElementById('chev-3');
-if(todayBody&&!state[3]){todayBody.classList.add('open');if(todayChev)todayChev.style.transform='rotate(180deg)';}
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+  const save = s  => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
 
-// LERNZETTEL
-const lzColors={epikur:'#e8b86d',leibniz:'#7eb8d4',voltaire:'#d47e7e',wiesel:'#a07ed4',jonas:'#7ed4a0',kushner:'#d4a07e',solle:'#d47eb8',compare:'rgba(255,255,255,0.4)'};
-function showLZ(id){
-  document.querySelectorAll('.lz-card').forEach(c=>c.classList.remove('active'));
-  document.querySelectorAll('.lz-btn').forEach(b=>{b.classList.remove('active');b.style.color='';});
-  document.getElementById('lz-'+id).classList.add('active');
-  const btn=document.getElementById('lznav-'+id);
-  if(btn){btn.classList.add('active');btn.style.color=lzColors[id]||'#fff';}
-  document.getElementById('view-lernzettel').style.setProperty('--active-lz',lzColors[id]||'rgba(255,255,255,0.4)');
-  document.querySelector('.lz-main').scrollTop=0;
-}
-// init lz nav color
-document.getElementById('lznav-epikur').style.color=lzColors.epikur;
-document.getElementById('view-lernzettel').style.setProperty('--active-lz',lzColors.epikur);
+  function refresh() {
+    const boxes = document.querySelectorAll('.tc input[type="checkbox"]');
+    const total = boxes.length, done = [...boxes].filter(b => b.checked).length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('pwFill').style.width = pct + '%';
+    document.getElementById('pwPct').textContent  = pct + ' %';
+    const s = document.getElementById('pwSummary');
+    if      (pct === 0)   s.textContent = 'Hake ab, was du sicher beherrschst.';
+    else if (pct < 30)    s.textContent = `${done} / ${total} ✓ – Guter Start, weitermachen!`;
+    else if (pct < 60)    s.textContent = `${done} / ${total} ✓ – Solider Fortschritt, bleib dran!`;
+    else if (pct < 85)    s.textContent = `${done} / ${total} ✓ – Du bist auf einem sehr guten Weg!`;
+    else if (pct < 100)   s.textContent = `${done} / ${total} ✓ – Fast fertig, noch den letzten Schliff!`;
+    else                  s.textContent = `Alle ${total} Themen ✓ – Du bist bereit für die Klausur! 🏆`;
+  }
+
+  function build() {
+    const state = load();
+    const container = document.getElementById('pwTopics');
+    container.innerHTML = '';
+    TOPICS.forEach(t => {
+      const checked = !!state[t.id];
+      const lbl = document.createElement('label');
+      lbl.className = 'tc' + (checked ? ' done' : '');
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = checked;
+      cb.addEventListener('change', () => {
+        const s = load(); s[t.id] = cb.checked; save(s);
+        lbl.classList.toggle('done', cb.checked);
+        refresh();
+      });
+
+      const span = document.createElement('span');
+      span.className = 'tc-label';
+      span.textContent = t.label;
+
+      lbl.appendChild(cb);
+      lbl.appendChild(span);
+      container.appendChild(lbl);
+    });
+    refresh();
+  }
+
+  function resetProgress() {
+    if (!confirm('Lernfortschritt wirklich zurücksetzen?')) return;
+    try { localStorage.removeItem(KEY); } catch {}
+    build();
+  }
+
+  build();
 </script>
 
 </body>
